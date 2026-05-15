@@ -22,81 +22,67 @@ export default function CarteraPage() {
     });
   }, []);
 
-  if (loading) return <div className="p-8 text-text-muted animate-pulse">Cargando cartera...</div>;
+  if (loading) return <Loading />;
 
   return (
-    <div className="p-8 space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-text">🦈 Tiburón — Cartera</h2>
-        <p className="text-text-muted text-sm mt-1">Tu portfolio de Revolut + Crypto</p>
+    <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)" }}>
+      <div className="fade-in" style={{ marginBottom: "var(--s-12)" }}>
+        <div className="step-label" style={{ marginBottom: "var(--s-3)" }}>Tiburón</div>
+        <h1 style={{ fontFamily: "'Courier Prime', monospace", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "-0.02em", lineHeight: 1.1, margin: 0 }}>
+          Portfolio
+        </h1>
+        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)" }}>
+          Revolut holdings + crypto. Prices via Yahoo Finance / CoinGecko.
+        </p>
       </div>
 
       {/* Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-bg-card rounded-xl border border-border p-5">
-          <div className="text-sm text-text-muted">Total invertido</div>
-          <div className="text-2xl font-bold text-text mt-1">€{data?.total_invested?.toFixed(2)}</div>
-        </div>
-        <div className="bg-bg-card rounded-xl border border-border p-5">
-          <div className="text-sm text-text-muted">Valor actual</div>
-          <div className="text-2xl font-bold text-text mt-1">€{data?.total_current?.toFixed(2)}</div>
-        </div>
-        <div className="bg-bg-card rounded-xl border border-border p-5">
-          <div className="text-sm text-text-muted">P&L</div>
-          <div className={`text-2xl font-bold mt-1 ${data && data.total_pnl >= 0 ? "text-success" : "text-danger"}`}>
-            {data?.total_pnl && data.total_pnl >= 0 ? "+" : ""}{data?.total_pnl?.toFixed(2)}€
-          </div>
-          <div className={`text-xs ${data && data.total_pnl_pct >= 0 ? "text-success" : "text-danger"}`}>
-            {data?.total_pnl_pct && data.total_pnl_pct >= 0 ? "+" : ""}{data?.total_pnl_pct}%
-          </div>
-        </div>
+      <div className="fade-in" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--s-4)", marginBottom: "var(--s-12)" }}>
+        <SummaryBlock label="INVESTED" value={`€${data?.total_invested?.toFixed(2) ?? "0"}`} />
+        <SummaryBlock label="CURRENT VALUE" value={`€${data?.total_current?.toFixed(2) ?? "0"}`} />
+        <SummaryBlock
+          label="P&L"
+          value={`${data?.total_pnl != null && data.total_pnl >= 0 ? "+" : ""}${data?.total_pnl?.toFixed(2)}€ (${data?.total_pnl_pct != null && data.total_pnl_pct >= 0 ? "+" : ""}${data?.total_pnl_pct}%)`}
+          positive={data?.total_pnl != null && data.total_pnl >= 0}
+        />
       </div>
 
       {/* BTC */}
       {data?.btc && data.btc.quantity > 0 && (
-        <div className="bg-bg-card rounded-xl border border-border p-5">
-          <h3 className="text-lg font-semibold text-text mb-3">₿ Bitcoin</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <span className="text-text-muted text-sm">Cantidad</span>
-              <div className="text-text font-medium">{data.btc.quantity}</div>
-            </div>
-            <div>
-              <span className="text-text-muted text-sm">Precio</span>
-              <div className="text-text font-medium">€{data.btc.price?.toLocaleString()}</div>
-            </div>
-            <div>
-              <span className="text-text-muted text-sm">Valor</span>
-              <div className="text-text font-medium">€{data.btc.value?.toFixed(2)}</div>
-            </div>
+        <div className="card fade-in" style={{ marginBottom: "var(--s-8)" }}>
+          <div className="step-label" style={{ marginBottom: "var(--s-3)" }}>Bitcoin</div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "var(--s-6)" }}>
+            <Stat label="Quantity" value={data.btc.quantity.toString()} />
+            <Stat label="Price" value={`€${data.btc.price?.toLocaleString()}`} />
+            <Stat label="Value" value={`€${data.btc.value?.toFixed(2)}`} />
           </div>
         </div>
       )}
 
-      {/* Holdings */}
-      <div className="bg-bg-card rounded-xl border border-border p-5">
-        <h3 className="text-lg font-semibold text-text mb-4">Holdings</h3>
+      {/* Holdings Table */}
+      <div className="card fade-in">
+        <div className="step-label" style={{ marginBottom: "var(--s-4)" }}>Holdings</div>
         {data?.items && data.items.length > 0 ? (
-          <table className="w-full text-sm">
+          <table className="data-table">
             <thead>
-              <tr className="text-text-muted border-b border-border">
-                <th className="text-left py-2 px-3">Ticker</th>
-                <th className="text-right py-2 px-3">Cantidad</th>
-                <th className="text-right py-2 px-3">Coste medio</th>
-                <th className="text-right py-2 px-3">Precio actual</th>
-                <th className="text-right py-2 px-3">Valor</th>
-                <th className="text-right py-2 px-3">P&L</th>
+              <tr>
+                <th>Ticker</th>
+                <th style={{ textAlign: "right" }}>Qty</th>
+                <th style={{ textAlign: "right" }}>Avg Cost</th>
+                <th style={{ textAlign: "right" }}>Price</th>
+                <th style={{ textAlign: "right" }}>Value</th>
+                <th style={{ textAlign: "right" }}>P&L</th>
               </tr>
             </thead>
             <tbody>
               {data.items.map((item) => (
-                <tr key={item.ticker} className="border-b border-border last:border-0 hover:bg-bg-hover">
-                  <td className="py-3 px-3 font-medium text-text">{item.ticker}</td>
-                  <td className="py-3 px-3 text-right text-text-muted">{item.quantity}</td>
-                  <td className="py-3 px-3 text-right text-text-muted">€{item.avg_cost.toFixed(2)}</td>
-                  <td className="py-3 px-3 text-right text-text">€{item.current_price.toFixed(2)}</td>
-                  <td className="py-3 px-3 text-right text-text font-medium">€{item.value.toFixed(2)}</td>
-                  <td className={`py-3 px-3 text-right font-medium ${item.pnl_pct >= 0 ? "text-success" : "text-danger"}`}>
+                <tr key={item.ticker}>
+                  <td style={{ fontFamily: "'Courier Prime', monospace", fontWeight: 600 }}>{item.ticker}</td>
+                  <td style={{ textAlign: "right", fontFamily: "'IBM Plex Mono', monospace", color: "var(--color-text-muted)" }}>{item.quantity}</td>
+                  <td style={{ textAlign: "right", fontFamily: "'IBM Plex Mono', monospace", color: "var(--color-text-muted)" }}>€{item.avg_cost.toFixed(2)}</td>
+                  <td style={{ textAlign: "right", fontFamily: "'IBM Plex Mono', monospace" }}>€{item.current_price.toFixed(2)}</td>
+                  <td style={{ textAlign: "right", fontFamily: "'IBM Plex Mono', monospace", fontWeight: 500 }}>€{item.value.toFixed(2)}</td>
+                  <td style={{ textAlign: "right", fontFamily: "'IBM Plex Mono', monospace", color: item.pnl_pct >= 0 ? "var(--color-success)" : "var(--color-danger)" }}>
                     {item.pnl_pct >= 0 ? "+" : ""}{item.pnl_pct}%
                   </td>
                 </tr>
@@ -104,9 +90,43 @@ export default function CarteraPage() {
             </tbody>
           </table>
         ) : (
-          <p className="text-text-muted">Sin posiciones</p>
+          <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>No positions</p>
         )}
       </div>
+    </div>
+  );
+}
+
+function SummaryBlock({ label, value, positive }: { label: string; value: string; positive?: boolean }) {
+  return (
+    <div className="card">
+      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-3)" }}>
+        {label}
+      </div>
+      <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: "1.5rem", fontWeight: 700, color: positive != null ? (positive ? "var(--color-success)" : "var(--color-danger)") : "var(--color-text-primary)", lineHeight: 1.1 }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.7rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-1)" }}>
+        {label}
+      </div>
+      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "1rem", color: "var(--color-text-primary)" }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function Loading() {
+  return (
+    <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
+      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>loading portfolio...</span>
     </div>
   );
 }

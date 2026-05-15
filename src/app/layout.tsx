@@ -6,6 +6,14 @@ export const metadata: Metadata = {
   description: "Multi-agent ecosystem control panel",
 };
 
+const navItems = [
+  { href: "/", label: "Overview" },
+  { href: "/cartera", label: "Cartera" },
+  { href: "/salud", label: "Salud" },
+  { href: "/news", label: "News" },
+  { href: "/actividad", label: "Actividad" },
+];
+
 export default function RootLayout({
   children,
 }: {
@@ -13,31 +21,77 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className="dark">
-      <body className="antialiased">
-        <div className="flex h-screen bg-bg text-text">
+      <body className="antialiased" style={{ background: "var(--color-bg-base)" }}>
+        <div style={{ display: "flex", minHeight: "100vh" }}>
           {/* Sidebar */}
-          <aside className="w-64 border-r border-border bg-bg-elevated flex flex-col">
-            <div className="p-6 border-b border-border">
-              <h1 className="text-xl font-bold gradient-text">⚡ Hermes</h1>
-              <p className="text-xs text-text-muted mt-1">Dashboard v0.1</p>
+          <aside
+            style={{
+              width: "200px",
+              borderRight: "1px solid var(--color-border)",
+              background: "var(--color-bg-surface)",
+              display: "flex",
+              flexDirection: "column",
+              flexShrink: 0,
+            }}
+          >
+            {/* Logo */}
+            <div style={{ padding: "var(--s-6)", borderBottom: "1px solid var(--color-border)" }}>
+              <a
+                href="/"
+                style={{
+                  fontFamily: "'Courier Prime', monospace",
+                  fontSize: "0.9rem",
+                  fontWeight: 600,
+                  color: "var(--color-text-primary)",
+                  textDecoration: "none",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                HERMES
+              </a>
+              <div
+                style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: "0.65rem",
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: "var(--color-text-muted)",
+                  marginTop: "4px",
+                }}
+              >
+                Dashboard v0.1
+              </div>
             </div>
-            <nav className="flex-1 p-4 space-y-1">
-              <SidebarLink href="/" icon="📊" label="Overview" />
-              <SidebarLink href="/cartera" icon="🦈" label="Cartera" />
-              <SidebarLink href="/salud" icon="💪" label="Salud" />
-              <SidebarLink href="/news" icon="☝️🤓" label="News" />
-              <SidebarLink href="/actividad" icon="📡" label="Actividad" />
+
+            {/* Nav */}
+            <nav style={{ flex: 1, padding: "var(--s-4)", display: "flex", flexDirection: "column", gap: "2px" }}>
+              {navItems.map((item) => (
+                <NavKey key={item.href} href={item.href} label={item.label} />
+              ))}
             </nav>
-            <div className="p-4 border-t border-border">
-              <div className="flex items-center gap-2 text-xs text-text-muted">
-                <div className="w-2 h-2 rounded-full bg-success pulse-dot"></div>
-                <span>Gateway online</span>
+
+            {/* Status */}
+            <div style={{ padding: "var(--s-4)", borderTop: "1px solid var(--color-border)" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: "0.65rem",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: "var(--color-text-muted)",
+                }}
+              >
+                <span className="status-dot status-dot--online"></span>
+                Gateway
               </div>
             </div>
           </aside>
 
-          {/* Main content */}
-          <main className="flex-1 overflow-y-auto">
+          {/* Main */}
+          <main style={{ flex: 1, overflowY: "auto" }}>
             {children}
           </main>
         </div>
@@ -46,14 +100,10 @@ export default function RootLayout({
   );
 }
 
-function SidebarLink({ href, icon, label }: { href: string; icon: string; label: string }) {
+function NavKey({ href, label }: { href: string; label: string }) {
   return (
-    <a
-      href={href}
-      className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm hover:bg-bg-hover transition-colors"
-    >
-      <span className="text-lg">{icon}</span>
-      <span className="text-text">{label}</span>
+    <a href={href} className="nav-link">
+      {label}
     </a>
   );
 }

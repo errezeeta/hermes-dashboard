@@ -14,6 +14,13 @@ interface ActivityData {
   logs: ActivityLog[];
 }
 
+const agentMeta: Record<string, { label: string; accent: string }> = {
+  "🦈 Tiburón": { label: "TIBURÓN", accent: "var(--color-amber)" },
+  "💪 JordiWild": { label: "JORDIWILD", accent: "var(--color-success)" },
+  "☝️🤓 News": { label: "NEWS", accent: "var(--color-gold)" },
+  "🤖 System": { label: "SYSTEM", accent: "var(--color-text-muted)" },
+};
+
 export default function ActividadPage() {
   const [data, setData] = useState<ActivityData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -25,54 +32,75 @@ export default function ActividadPage() {
     });
   }, []);
 
-  if (loading) return <div className="p-8 text-text-muted animate-pulse">Cargando actividad...</div>;
+  if (loading) return <Loading />;
 
   return (
-    <div className="p-8 space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-text">📡 Actividad de Agentes</h2>
-        <p className="text-text-muted text-sm mt-1">Estado y logs del sistema</p>
+    <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)" }}>
+      <div className="fade-in" style={{ marginBottom: "var(--s-12)" }}>
+        <div className="step-label" style={{ marginBottom: "var(--s-3)" }}>System</div>
+        <h1 style={{ fontFamily: "'Courier Prime', monospace", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "-0.02em", lineHeight: 1.1, margin: 0 }}>
+          Agent Activity
+        </h1>
+        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)" }}>
+          Gateway logs and agent status.
+        </p>
       </div>
 
-      {/* Agent status */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {data?.agents.map((agent) => (
-          <div key={agent.name} className="bg-bg-card rounded-xl border border-border p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="text-2xl">{agent.emoji}</span>
-              <div>
-                <div className="font-semibold text-text">{agent.name}</div>
-                <div className={`text-xs ${agent.status === "online" ? "text-success" : "text-text-muted"}`}>
-                  <span className="inline-block w-2 h-2 rounded-full bg-current mr-1 pulse-dot"></span>
-                  {agent.status}
-                </div>
+      {/* Agent Status */}
+      <div className="fade-in" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--s-4)", marginBottom: "var(--s-12)" }}>
+        {data?.agents.map((agent) => {
+          const meta = agentMeta[agent.name] ?? agentMeta["🤖 System"];
+          return (
+            <div key={agent.name} className="card">
+              <div style={{ display: "flex", alignItems: "center", gap: "var(--s-3)", marginBottom: "var(--s-3)" }}>
+                <span className={`status-dot ${agent.status === "online" ? "status-dot--online" : "status-dot--idle"}`}></span>
+                <span style={{ fontFamily: "'Courier Prime', monospace", fontSize: "0.9rem", fontWeight: 600, color: "var(--color-text-primary)" }}>
+                  {meta.label}
+                </span>
+              </div>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-muted)", lineHeight: 1.6 }}>
+                <div>last: {agent.lastRun}</div>
+                <div>next: {agent.nextRun}</div>
               </div>
             </div>
-            <div className="text-xs text-text-muted space-y-1">
-              <div>Última ejecución: {agent.lastRun}</div>
-              <div>Próxima: {agent.nextRun}</div>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Logs */}
-      <div className="bg-bg-card rounded-xl border border-border p-5">
-        <h3 className="text-lg font-semibold text-text mb-4">Logs</h3>
-        <div className="space-y-1 font-mono text-xs">
+      <div className="card fade-in">
+        <div className="step-label" style={{ marginBottom: "var(--s-4)" }}>Log Stream</div>
+        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.75rem", lineHeight: 1.8, color: "var(--color-text-muted)" }}>
           {data?.logs && data.logs.length > 0 ? (
-            data.logs.map((log, i) => (
-              <div key={i} className={`flex gap-3 py-1 px-2 rounded ${log.type === "warning" ? "bg-warning/5" : log.type === "error" ? "bg-danger/5" : ""}`}>
-                <span className="text-text-dim whitespace-nowrap">{log.timestamp}</span>
-                <span className="whitespace-nowrap">{log.agent}</span>
-                <span className="text-text-muted truncate">{log.message}</span>
-              </div>
-            ))
+            data.logs.map((log, i) => {
+              const meta = agentMeta[log.agent] ?? agentMeta["🤖 System"];
+              return (
+                <div key={i} style={{ display: "flex", gap: "var(--s-3)", padding: "var(--s-1) 0", borderBottom: "1px solid var(--color-border)", opacity: 1 - (i * 0.03) }}>
+                  <span style={{ color: "var(--color-text-faint)", flexShrink: 0, minWidth: "140px" }}>
+                    {log.timestamp}
+                  </span>
+                  <span style={{ color: meta.accent, flexShrink: 0, minWidth: "80px" }}>
+                    [{meta.label}]
+                  </span>
+                  <span style={{ color: "var(--color-text-primary)", overflowWrap: "break-word" }}>
+                    {log.message}
+                  </span>
+                </div>
+              );
+            })
           ) : (
-            <p className="text-text-muted">Sin logs recientes</p>
+            <div style={{ padding: "var(--s-8)", textAlign: "center" }}>No recent logs</div>
           )}
         </div>
       </div>
+    </div>
+  );
+}
+
+function Loading() {
+  return (
+    <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
+      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>loading activity...</span>
     </div>
   );
 }

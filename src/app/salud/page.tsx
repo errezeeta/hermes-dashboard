@@ -19,60 +19,64 @@ export default function SaludPage() {
     });
   }, []);
 
-  if (loading) return <div className="p-8 text-text-muted animate-pulse">Cargando salud...</div>;
+  if (loading) return <Loading />;
 
-  const trendIcon = (t: string) => t === "up" ? "↗️" : t === "down" ? "↘️" : "➡️";
-  const trendColor = (t: string) => t === "up" ? "text-success" : t === "down" ? "text-danger" : "text-text-muted";
+  const trendLabel = (t: string) => t === "up" ? "↗ rising" : t === "down" ? "↘ falling" : "→ stable";
+  const trendColor = (t: string) => t === "up" ? "var(--color-success)" : t === "down" ? "var(--color-danger)" : "var(--color-text-muted)";
+  const stepPct = data?.steps ? Math.min((data.steps.today / 10000) * 100, 100) : 0;
 
   return (
-    <div className="p-8 space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-text">💪 JordiWild — Salud</h2>
-        <p className="text-text-muted text-sm mt-1">Métricas de salud y bienestar</p>
+    <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)" }}>
+      <div className="fade-in" style={{ marginBottom: "var(--s-12)" }}>
+        <div className="step-label" style={{ marginBottom: "var(--s-3)" }}>JordiWild</div>
+        <h1 style={{ fontFamily: "'Courier Prime', monospace", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "-0.02em", lineHeight: 1.1, margin: 0 }}>
+          Health Metrics
+        </h1>
+        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)" }}>
+          Steps, weight, sleep. Source: Google Fit via Xiaomi Watch 2.
+        </p>
       </div>
 
       {data?.steps && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatCard title="Pasos hoy" value={data.steps.today.toLocaleString()} icon="🚶" />
-          <StatCard title="Media 7 días" value={Math.round(data.steps.avg7d).toLocaleString()} icon="📊" />
-          <StatCard title="Media 30 días" value={Math.round(data.steps.avg30d).toLocaleString()} icon="📈" />
-          <div className="bg-bg-card rounded-xl border border-border p-5">
-            <div className="text-sm text-text-muted">Tendencia</div>
-            <div className={`text-2xl mt-1 ${trendColor(data.steps.trend)}`}>
-              {trendIcon(data.steps.trend)} {data.steps.trend === "up" ? "Subiendo" : data.steps.trend === "down" ? "Bajando" : "Estable"}
+        <>
+          {/* Steps grid */}
+          <div className="fade-in" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--s-4)", marginBottom: "var(--s-8)" }}>
+            <MetricBlock label="STEPS TODAY" value={data.steps.today.toLocaleString()} />
+            <MetricBlock label="7D AVERAGE" value={Math.round(data.steps.avg7d).toLocaleString()} />
+            <MetricBlock label="30D AVERAGE" value={Math.round(data.steps.avg30d).toLocaleString()} />
+            <div className="card">
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-3)" }}>
+                TREND
+              </div>
+              <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: "1.1rem", color: trendColor(data.steps.trend), lineHeight: 1.1 }}>
+                {trendLabel(data.steps.trend)}
+              </div>
             </div>
           </div>
-        </div>
+
+          {/* Step goal */}
+          <div className="card fade-in" style={{ marginBottom: "var(--s-8)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--s-3)" }}>
+              <div className="step-label">Daily Goal — 10,000 steps</div>
+              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>
+                {Math.round(stepPct)}%
+              </span>
+            </div>
+            <div className="progress-bar">
+              <div className="progress-bar__fill" style={{ width: `${stepPct}%` }} />
+            </div>
+          </div>
+        </>
       )}
 
+      {/* Weight */}
       {data?.weight && (
-        <div className="bg-bg-card rounded-xl border border-border p-5">
-          <h3 className="text-lg font-semibold text-text mb-4">⚖️ Peso</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <span className="text-text-muted text-sm">Actual</span>
-              <div className="text-2xl font-bold text-text mt-1">{data.weight.current} kg</div>
-            </div>
-            <div>
-              <span className="text-text-muted text-sm">Media 7 días</span>
-              <div className="text-2xl font-bold text-text mt-1">{data.weight.avg7d} kg</div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Step goal progress */}
-      {data?.steps && (
-        <div className="bg-bg-card rounded-xl border border-border p-5">
-          <h3 className="text-lg font-semibold text-text mb-4">🎯 Objetivo 10,000 pasos</h3>
-          <div className="w-full bg-bg h-4 rounded-full overflow-hidden">
-            <div
-              className="bg-primary h-full rounded-full transition-all"
-              style={{ width: `${Math.min((data.steps.today / 10000) * 100, 100)}%` }}
-            />
-          </div>
-          <div className="text-sm text-text-muted mt-2">
-            {Math.round((data.steps.today / 10000) * 100)}% completado
+        <div className="card fade-in" style={{ marginBottom: "var(--s-8)" }}>
+          <div className="step-label" style={{ marginBottom: "var(--s-4)" }}>Weight</div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "var(--s-6)" }}>
+            <Stat label="Current" value={`${data.weight.current} kg`} />
+            <Stat label="7d Average" value={`${data.weight.avg7d} kg`} />
+            <Stat label="Trend" value={trendLabel(data.weight.trend)} color={trendColor(data.weight.trend)} />
           </div>
         </div>
       )}
@@ -80,11 +84,36 @@ export default function SaludPage() {
   );
 }
 
-function StatCard({ title, value, icon }: { title: string; value: string; icon: string }) {
+function MetricBlock({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-bg-card rounded-xl border border-border p-5">
-      <div className="text-sm text-text-muted">{icon} {title}</div>
-      <div className="text-2xl font-bold text-text mt-2">{value}</div>
+    <div className="card">
+      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-3)" }}>
+        {label}
+      </div>
+      <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: "1.5rem", fontWeight: 700, color: "var(--color-text-primary)", lineHeight: 1.1 }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function Stat({ label, value, color }: { label: string; value: string; color?: string }) {
+  return (
+    <div>
+      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.7rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-1)" }}>
+        {label}
+      </div>
+      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "1rem", color: color ?? "var(--color-text-primary)" }}>
+        {value}
+      </div>
+    </div>
+  );
+}
+
+function Loading() {
+  return (
+    <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
+      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>loading health data...</span>
     </div>
   );
 }

@@ -19,53 +19,84 @@ export default function NewsPage() {
     });
   }, []);
 
-  if (loading) return <div className="p-8 text-text-muted animate-pulse">Cargando noticias...</div>;
+  if (loading) return <Loading />;
 
-  const categories = ["all", "tech", "deportes", "ciencia"];
+  const categories = [
+    { key: "all", label: "ALL" },
+    { key: "tech", label: "TECH" },
+    { key: "deportes", label: "DEPORTES" },
+    { key: "ciencia", label: "CIENCIA" },
+  ];
   const filtered = filter === "all" ? data?.articles : data?.articles.filter(a => a.category === filter);
 
   return (
-    <div className="p-8 space-y-6">
-      <div>
-        <h2 className="text-2xl font-bold text-text">☝️🤓 News — Últimas Noticias</h2>
-        <p className="text-text-muted text-sm mt-1">{data?.total} artículos sin leer</p>
+    <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)" }}>
+      <div className="fade-in" style={{ marginBottom: "var(--s-8)" }}>
+        <div className="step-label" style={{ marginBottom: "var(--s-3)" }}>News</div>
+        <h1 style={{ fontFamily: "'Courier Prime', monospace", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "-0.02em", lineHeight: 1.1, margin: 0 }}>
+          RSS Feed
+        </h1>
+        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)" }}>
+          {data?.total} unread articles from monitored sources.
+        </p>
       </div>
 
-      {/* Filter tabs */}
-      <div className="flex gap-2">
+      {/* Filters */}
+      <div className="fade-in" style={{ display: "flex", gap: "var(--s-2)", marginBottom: "var(--s-8)", flexWrap: "wrap" }}>
         {categories.map(c => (
           <button
-            key={c}
-            onClick={() => setFilter(c)}
-            className={`px-4 py-1.5 rounded-full text-sm border transition-colors ${
-              filter === c
-                ? "bg-primary text-white border-primary"
-                : "bg-bg-card text-text-muted border-border hover:border-border-light"
-            }`}
+            key={c.key}
+            onClick={() => setFilter(c.key)}
+            style={{
+              padding: "4px 10px",
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontSize: "0.7rem",
+              letterSpacing: "0.1em",
+              textTransform: "uppercase",
+              cursor: "pointer",
+              borderRadius: "var(--r-sm)",
+              transition: "all var(--t-fast)",
+              background: filter === c.key ? "var(--color-amber)" : "transparent",
+              color: filter === c.key ? "var(--color-bg-base)" : "var(--color-text-muted)",
+              border: `1px solid ${filter === c.key ? "var(--color-amber)" : "var(--color-border)"}`,
+            }}
           >
-            {c === "all" ? "Todas" : c === "tech" ? "📱 Tech" : c === "deportes" ? "⚽ Deportes" : "🔬 Ciencia"}
+            {c.label}
           </button>
         ))}
       </div>
 
       {/* Articles */}
-      <div className="space-y-2">
+      <div className="fade-in" style={{ display: "flex", flexDirection: "column", gap: "var(--s-2)" }}>
         {filtered && filtered.length > 0 ? (
           filtered.map((article, i) => (
-            <div key={i} className="bg-bg-card rounded-lg border border-border p-4 card-hover flex items-start gap-4">
-              <span className="text-lg mt-0.5">
-                {article.category === "deportes" ? "⚽" : article.category === "ciencia" ? "🔬" : "📱"}
-              </span>
-              <div className="flex-1 min-w-0">
-                <div className="text-sm text-text">{article.title}</div>
-                <div className="text-xs text-text-muted mt-1 uppercase">{article.source}</div>
+            <div key={i} className="card" style={{ padding: "var(--s-4)", animationDelay: `${i * 60}ms` }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "var(--s-4)" }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-primary)", lineHeight: 1.5 }}>
+                    {article.title}
+                  </div>
+                </div>
+                <div className="badge" style={{ flexShrink: 0, marginTop: "2px" }}>
+                  {article.source}
+                </div>
               </div>
             </div>
           ))
         ) : (
-          <p className="text-text-muted text-center py-8">Sin noticias en esta categoría</p>
+          <div style={{ textAlign: "center", padding: "var(--s-16)", color: "var(--color-text-muted)", fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem" }}>
+            No articles in this category
+          </div>
         )}
       </div>
+    </div>
+  );
+}
+
+function Loading() {
+  return (
+    <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
+      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>loading news...</span>
     </div>
   );
 }

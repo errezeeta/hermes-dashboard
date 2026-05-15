@@ -40,7 +40,6 @@ export default function Home() {
       setLoading(false);
     });
 
-    // Refresh every 30s
     const interval = setInterval(() => {
       fetch("/api/cartera").then(r => r.json()).then(setPortfolio);
       fetch("/api/salud").then(r => r.json()).then(setHealth);
@@ -51,68 +50,55 @@ export default function Home() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-text-muted animate-pulse">Cargando dashboard...</div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
+        <span style={{ color: "var(--color-text-muted)", fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem" }}>
+          initializing...
+        </span>
       </div>
     );
   }
 
   return (
-    <div className="p-8 space-y-8">
+    <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)" }}>
       {/* Header */}
-      <div>
-        <h2 className="text-2xl font-bold text-text">Dashboard Overview</h2>
-        <p className="text-text-muted text-sm mt-1">Todos tus agentes en un vistazo</p>
+      <div className="fade-in" style={{ marginBottom: "var(--s-12)" }}>
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-3)" }}>
+          System Status
+        </div>
+        <h1 style={{ fontFamily: "'Courier Prime', monospace", fontSize: "clamp(1.8rem, 4vw, 2.5rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "-0.02em", lineHeight: 1.1, margin: 0 }}>
+          Hermes Dashboard
+        </h1>
+        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)", lineHeight: 1.6 }}>
+          Multi-agent ecosystem control panel. Local-first.
+        </p>
       </div>
 
-      {/* Summary cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <SummaryCard
-          title="💰 Cartera Total"
-          value={`€${portfolio?.total_current?.toFixed(2) ?? "0"}`}
-          subtitle={
-            portfolio?.total_pnl_pct
-              ? `${portfolio.total_pnl > 0 ? "+" : ""}${portfolio.total_pnl_pct}%`
-              : "—"
-          }
-          color={portfolio && portfolio.total_pnl >= 0 ? "text-success" : "text-danger"}
-        />
-        <SummaryCard
-          title="🚶 Pasos Hoy"
-          value={health?.steps?.today?.toLocaleString() ?? "0"}
-          subtitle={`Media 7d: ${Math.round(health?.steps?.avg7d ?? 0).toLocaleString()}`}
-          color="text-accent-cyan"
-        />
-        <SummaryCard
-          title="📰 Noticias"
-          value={news?.total?.toString() ?? "0"}
-          subtitle="Artículos sin leer"
-          color="text-warning"
-        />
-        <SummaryCard
-          title="₿ BTC"
-          value={portfolio?.btc?.price ? `€${portfolio.btc.price.toLocaleString()}` : "—"}
-          subtitle={portfolio?.btc?.quantity ? `${portfolio.btc.quantity} BTC` : "—"}
-          color="text-accent-orange"
-        />
+      {/* Summary Cards */}
+      <div className="fade-in" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--s-4)", marginBottom: "var(--s-12)" }}>
+        <MetricCard label="CARTERA TOTAL" value={`€${portfolio?.total_current?.toFixed(2) ?? "0"}`} sub={portfolio?.total_pnl_pct != null ? `${portfolio.total_pnl >= 0 ? "+" : ""}${portfolio.total_pnl_pct}%` : undefined} positive={portfolio?.total_pnl != null && portfolio.total_pnl >= 0} delay={0} />
+        <MetricCard label="PASOS HOY" value={health?.steps?.today?.toLocaleString() ?? "—"} sub={`media 7d: ${Math.round(health?.steps?.avg7d ?? 0).toLocaleString()}`} delay={80} />
+        <MetricCard label="NOTICIAS" value={news?.total?.toString() ?? "0"} sub="artículos" delay={160} />
+        <MetricCard label="BTC PRICE" value={portfolio?.btc?.price ? `€${portfolio.btc.price.toLocaleString()}` : "—"} sub={portfolio?.btc?.quantity ? `${portfolio.btc.quantity} BTC` : undefined} delay={240} />
       </div>
 
-      {/* Portfolio + Health row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Portfolio + Health */}
+      <div className="fade-in" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "var(--s-4)", marginBottom: "var(--s-12)" }}>
         {/* Portfolio */}
-        <div className="bg-bg-card rounded-xl border border-border p-6 card-hover">
-          <h3 className="text-lg font-semibold text-text mb-4">🦈 Tiburón — Cartera</h3>
+        <div className="card" style={{ animationDelay: "80ms" }}>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-4)" }}>
+            Tiburón — Portfolio
+          </div>
           {portfolio?.items && portfolio.items.length > 0 ? (
-            <div className="space-y-3">
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--s-3)" }}>
               {portfolio.items.map((item) => (
-                <div key={item.ticker} className="flex justify-between items-center py-2 border-b border-border last:border-0">
+                <div key={item.ticker} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "var(--s-2)", borderBottom: "1px solid var(--color-border)" }}>
                   <div>
-                    <span className="font-medium text-text">{item.ticker}</span>
-                    <span className="text-text-muted text-sm ml-2">{item.quantity}</span>
+                    <span style={{ fontFamily: "'Courier Prime', monospace", fontWeight: 600, color: "var(--color-text-primary)" }}>{item.ticker}</span>
+                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-muted)", marginLeft: "var(--s-2)" }}>{item.quantity}</span>
                   </div>
-                  <div className="text-right">
-                    <div className="text-text">€{item.value.toFixed(2)}</div>
-                    <div className={`text-xs ${item.pnl_pct >= 0 ? "text-success" : "text-danger"}`}>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-primary)" }}>€{item.value.toFixed(2)}</div>
+                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.7rem", color: item.pnl_pct >= 0 ? "var(--color-success)" : "var(--color-danger)" }}>
                       {item.pnl_pct >= 0 ? "+" : ""}{item.pnl_pct}%
                     </div>
                   </div>
@@ -120,70 +106,80 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <p className="text-text-muted text-sm">Sin posiciones por ahora</p>
+            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>No positions</p>
           )}
         </div>
 
         {/* Health */}
-        <div className="bg-bg-card rounded-xl border border-border p-6 card-hover">
-          <h3 className="text-lg font-semibold text-text mb-4">💪 JordiWild — Salud</h3>
-          <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="text-text-muted">Pasos hoy</span>
-              <span className="text-text font-medium">{health?.steps?.today?.toLocaleString() ?? "—"}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-text-muted">Media 7 días</span>
-              <span className="text-text font-medium">{Math.round(health?.steps?.avg7d ?? 0).toLocaleString()}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-text-muted">Tendencia</span>
-              <span className={`font-medium ${health?.steps?.trend === "up" ? "text-success" : health?.steps?.trend === "down" ? "text-danger" : "text-text-muted"}`}>
-                {health?.steps?.trend === "up" ? "↗️ Subiendo" : health?.steps?.trend === "down" ? "↘️ Bajando" : "➡️ Estable"}
-              </span>
-            </div>
+        <div className="card" style={{ animationDelay: "160ms" }}>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-4)" }}>
+            JordiWild — Health
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "var(--s-3)" }}>
+            <HealthRow label="Steps today" value={health?.steps?.today?.toLocaleString() ?? "—"} />
+            <HealthRow label="7d average" value={Math.round(health?.steps?.avg7d ?? 0).toLocaleString()} />
+            <HealthRow label="Trend" value={health?.steps?.trend === "up" ? "↗ rising" : health?.steps?.trend === "down" ? "↘ falling" : "→ stable"} />
             {health?.weight && (
               <>
-                <div className="flex justify-between items-center">
-                  <span className="text-text-muted">Peso actual</span>
-                  <span className="text-text font-medium">{health.weight.current} kg</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-text-muted">Media 7d</span>
-                  <span className="text-text font-medium">{health.weight.avg7d} kg</span>
-                </div>
+                <HealthRow label="Weight" value={`${health.weight.current} kg`} />
+                <HealthRow label="7d avg weight" value={`${health.weight.avg7d} kg`} />
               </>
             )}
           </div>
         </div>
       </div>
 
-      {/* News row */}
-      <div className="bg-bg-card rounded-xl border border-border p-6 card-hover">
-        <h3 className="text-lg font-semibold text-text mb-4">☝️🤓 News — Últimas Noticias</h3>
-        {news?.articles && news.articles.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {news.articles.slice(0, 9).map((article, i) => (
-              <div key={i} className="p-3 rounded-lg bg-bg-hover border border-border">
-                <div className="text-xs text-text-muted uppercase mb-1">{article.source}</div>
-                <div className="text-sm text-text">{article.title}</div>
-              </div>
-            ))}
+      {/* News */}
+      <div className="fade-in" style={{ animationDelay: "240ms" }}>
+        <div className="card">
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-4)" }}>
+            News — Latest
           </div>
-        ) : (
-          <p className="text-text-muted text-sm">Sin noticias nuevas</p>
-        )}
+          {news?.articles && news.articles.length > 0 ? (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "var(--s-3)" }}>
+              {news.articles.slice(0, 6).map((article, i) => (
+                <div key={i} style={{ padding: "var(--s-3)", background: "var(--color-code-bg)", border: "1px solid var(--color-border)", borderRadius: "var(--r-sm)" }}>
+                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-1)" }}>
+                    {article.source}
+                  </div>
+                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-primary)", lineHeight: 1.5 }}>
+                    {article.title}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>No new articles</p>
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
-function SummaryCard({ title, value, subtitle, color }: { title: string; value: string; subtitle: string; color: string }) {
+function MetricCard({ label, value, sub, positive, delay = 0 }: { label: string; value: string; sub?: string; positive?: boolean; delay?: number }) {
   return (
-    <div className="bg-bg-card rounded-xl border border-border p-5 card-hover">
-      <div className="text-sm text-text-muted mb-1">{title}</div>
-      <div className="text-2xl font-bold text-text">{value}</div>
-      <div className={`text-xs mt-1 ${color}`}>{subtitle}</div>
+    <div className="card" style={{ animationDelay: `${delay}ms` }}>
+      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-3)" }}>
+        {label}
+      </div>
+      <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: "1.5rem", fontWeight: 700, color: "var(--color-text-primary)", lineHeight: 1.1 }}>
+        {value}
+      </div>
+      {sub && (
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: positive != null ? (positive ? "var(--color-success)" : "var(--color-danger)") : "var(--color-text-muted)", marginTop: "var(--s-1)" }}>
+          {sub}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function HealthRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: "var(--s-2)", borderBottom: "1px solid var(--color-border)" }}>
+      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>{label}</span>
+      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-primary)" }}>{value}</span>
     </div>
   );
 }
