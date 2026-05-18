@@ -65,39 +65,39 @@ export default function Home() {
   return (
     <div className="page-container" style={{ maxWidth: "960px", margin: "0 auto" }}>
       {/* Header */}
-      <div className="fade-in" style={{ marginBottom: "var(--s-12)" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "var(--s-6)", flexWrap: "wrap" }}>
+      <div className="fade-in" style={{ marginBottom: "var(--s-8)" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "var(--s-4)", flexWrap: "wrap" }}>
           <div>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-3)" }}>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-1)" }}>
               System Status
             </div>
-            <div className="glitch" data-text="MARLONBOT 0.1" style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "clamp(1rem, 2vw, 1.4rem)", color: "var(--color-text-primary)", letterSpacing: "0.08em", lineHeight: 1.3, margin: 0, textTransform: "uppercase" }}>
+            <div className="glitch" data-text="MARLONBOT 0.1" style={{ fontFamily: "'Jacquard 24 Charted', monospace", fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", color: "var(--color-text-primary)", letterSpacing: "0.04em", lineHeight: 1.2, margin: 0 }}>
               Marlonbot 0.1
             </div>
-            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.9rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)", lineHeight: 1.6 }}>
+            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-muted)", marginTop: "var(--s-1)", lineHeight: 1.5 }}>
               Multi-agent ecosystem control panel. Local-first. Noisy by design.
             </p>
-            <div style={{ display: "flex", gap: "var(--s-3)", marginTop: "var(--s-4)", flexWrap: "wrap", alignItems: "center" }}>
+            <div style={{ display: "flex", gap: "var(--s-3)", marginTop: "var(--s-3)", flexWrap: "wrap", alignItems: "center" }}>
               <a className="btn-amber" href="/cartera">Open Console</a>
               <a className="btn-amber" href="/actividad" style={{ borderColor: "var(--color-cyan)", color: "var(--color-cyan)" }}>Live Signal</a>
             </div>
           </div>
 
-          <div className="header-cards" style={{ display: "flex", flexDirection: "column", gap: "var(--s-3)", minWidth: "220px" }}>
-            <div className="card" style={{ padding: "var(--s-4)" }}>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
+          <div className="header-cards" style={{ display: "flex", flexDirection: "column", gap: "var(--s-3)", minWidth: "200px" }}>
+            <div className="card" style={{ padding: "var(--s-3)" }}>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
                 Automations
               </div>
               {system?.cron_lines && system.cron_lines.length > 0 ? (
-                <div style={{ marginTop: "var(--s-2)", display: "grid", gap: "6px" }}>
-                  {system.cron_lines.slice(0, 8).map((line, idx) => (
-                    <div key={idx} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.7rem", color: "var(--color-text-primary)", borderBottom: "1px dashed var(--color-border)", paddingBottom: "4px" }}>
+                <div style={{ marginTop: "var(--s-1)", display: "grid", gap: "3px" }}>
+                  {system.cron_lines.slice(0, 6).map((line, idx) => (
+                    <div key={idx} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", color: "var(--color-text-primary)", borderBottom: "1px dashed var(--color-border)", paddingBottom: "2px" }}>
                       {line}
                     </div>
                   ))}
                 </div>
               ) : (
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-primary)", marginTop: "var(--s-2)" }}>
+                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)", marginTop: "var(--s-1)" }}>
                   loading
                 </div>
               )}
@@ -107,7 +107,7 @@ export default function Home() {
       </div>
 
       {/* Summary Cards */}
-      <div className="fade-in metric-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--s-4)", marginBottom: "var(--s-12)" }}>
+      <div className="fade-in metric-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "var(--s-3)", marginBottom: "var(--s-6)" }}>
         <MetricCard label="CARTERA TOTAL" value={`€${portfolio?.total_current?.toFixed(2) ?? "0"}`} sub={portfolio?.total_pnl_pct != null ? `${portfolio.total_pnl >= 0 ? "+" : ""}${portfolio.total_pnl_pct}%` : undefined} positive={portfolio?.total_pnl != null && portfolio.total_pnl >= 0} delay={0} />
         <MetricCard label="PASOS HOY" value={health?.steps?.today?.toLocaleString() ?? "—"} sub={`media 7d: ${Math.round(health?.steps?.avg7d ?? 0).toLocaleString()}`} delay={80} />
         <MetricCard label="NOTICIAS" value={news?.total?.toString() ?? "0"} sub="artículos" delay={160} />
@@ -115,22 +115,22 @@ export default function Home() {
       </div>
 
       {/* Portfolio + Health */}
-      <div className="fade-in" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "var(--s-4)", marginBottom: "var(--s-12)" }}>
-        <div className="card" style={{ animationDelay: "80ms" }}>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-4)" }}>
+      <div className="fade-in" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "var(--s-3)", marginBottom: "var(--s-6)" }}>
+        <div className="card" style={{ padding: "var(--s-4)", animationDelay: "80ms" }}>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-3)" }}>
             Tiburón — Portfolio
           </div>
           {portfolio?.items && portfolio.items.length > 0 ? (
-            <div style={{ display: "flex", flexDirection: "column", gap: "var(--s-3)" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--s-2)" }}>
               {portfolio.items.map((item) => (
-                <div key={item.ticker} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "var(--s-2)", borderBottom: "1px solid var(--color-border)" }}>
+                <div key={item.ticker} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: "var(--s-1)", borderBottom: "1px solid var(--color-border)" }}>
                   <div>
-                    <span style={{ fontFamily: "'Courier Prime', monospace", fontWeight: 600, color: "var(--color-text-primary)" }}>{item.ticker}</span>
-                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-muted)", marginLeft: "var(--s-2)" }}>{item.quantity}</span>
+                    <span style={{ fontFamily: "'Courier Prime', monospace", fontWeight: 600, fontSize: "0.85rem", color: "var(--color-text-primary)" }}>{item.ticker}</span>
+                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.7rem", color: "var(--color-text-muted)", marginLeft: "var(--s-2)" }}>{item.quantity}</span>
                   </div>
                   <div style={{ textAlign: "right" }}>
-                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-primary)" }}>€{item.value.toFixed(2)}</div>
-                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.7rem", color: item.pnl_pct >= 0 ? "var(--color-success)" : "var(--color-danger)" }}>
+                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-primary)" }}>€{item.value.toFixed(2)}</div>
+                    <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", color: item.pnl_pct >= 0 ? "var(--color-success)" : "var(--color-danger)" }}>
                       {item.pnl_pct >= 0 ? "+" : ""}{item.pnl_pct}%
                     </div>
                   </div>
@@ -138,15 +138,15 @@ export default function Home() {
               ))}
             </div>
           ) : (
-            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>No positions</p>
+            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-muted)" }}>No positions</p>
           )}
         </div>
 
-        <div className="card" style={{ animationDelay: "160ms" }}>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-4)" }}>
+        <div className="card" style={{ padding: "var(--s-4)", animationDelay: "160ms" }}>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-3)" }}>
             JordiWild — Health
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--s-3)" }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "var(--s-2)" }}>
             <HealthRow label="Steps today" value={health?.steps?.today?.toLocaleString() ?? "—"} />
             <HealthRow label="7d average" value={Math.round(health?.steps?.avg7d ?? 0).toLocaleString()} />
             <HealthRow label="Trend" value={health?.steps?.trend === "up" ? "↗ rising" : health?.steps?.trend === "down" ? "↘ falling" : "→ stable"} />
@@ -162,25 +162,25 @@ export default function Home() {
 
       {/* News */}
       <div className="fade-in" style={{ animationDelay: "240ms" }}>
-        <div className="card">
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-4)" }}>
+        <div className="card" style={{ padding: "var(--s-4)" }}>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-3)" }}>
             News — Latest
           </div>
           {news?.articles && news.articles.length > 0 ? (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "var(--s-3)" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "var(--s-2)" }}>
               {news.articles.slice(0, 6).map((article, i) => (
-                <div key={i} style={{ padding: "var(--s-3)", background: "var(--color-code-bg)", border: "1px solid var(--color-border)", borderRadius: "var(--r-sm)" }}>
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-1)" }}>
+                <div key={i} style={{ padding: "var(--s-2)", background: "var(--color-code-bg)", border: "1px solid var(--color-border)", borderRadius: "var(--r-sm)" }}>
+                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-1)" }}>
                     {article.source}
                   </div>
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-primary)", lineHeight: 1.5 }}>
+                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-primary)", lineHeight: 1.4 }}>
                     {article.title}
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>No new articles</p>
+            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-muted)" }}>No new articles</p>
           )}
         </div>
       </div>
@@ -190,15 +190,15 @@ export default function Home() {
 
 function MetricCard({ label, value, sub, positive, delay = 0 }: { label: string; value: string; sub?: string; positive?: boolean; delay?: number }) {
   return (
-    <div className="card" style={{ animationDelay: `${delay}ms` }}>
-      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-3)" }}>
+    <div className="card" style={{ padding: "var(--s-3)", animationDelay: `${delay}ms` }}>
+      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-1)" }}>
         {label}
       </div>
-      <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: "1.5rem", fontWeight: 700, color: "var(--color-text-primary)", lineHeight: 1.1 }}>
+      <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: "1.2rem", fontWeight: 700, color: "var(--color-text-primary)", lineHeight: 1.1 }}>
         {value}
       </div>
       {sub && (
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: positive != null ? (positive ? "var(--color-success)" : "var(--color-danger)") : "var(--color-text-muted)", marginTop: "var(--s-1)" }}>
+        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", color: positive != null ? (positive ? "var(--color-success)" : "var(--color-danger)") : "var(--color-text-muted)", marginTop: "2px" }}>
           {sub}
         </div>
       )}
@@ -208,9 +208,9 @@ function MetricCard({ label, value, sub, positive, delay = 0 }: { label: string;
 
 function HealthRow({ label, value }: { label: string; value: string }) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: "var(--s-2)", borderBottom: "1px solid var(--color-border)" }}>
-      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>{label}</span>
-      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-primary)" }}>{value}</span>
+    <div style={{ display: "flex", justifyContent: "space-between", paddingBottom: "var(--s-1)", borderBottom: "1px solid var(--color-border)" }}>
+      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-muted)" }}>{label}</span>
+      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)" }}>{value}</span>
     </div>
   );
 }

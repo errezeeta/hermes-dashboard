@@ -13,6 +13,8 @@ const navItems = [
   { href: "/salud", label: "Salud" },
   { href: "/news", label: "News" },
   { href: "/actividad", label: "Actividad" },
+  { href: "/agents", label: "Agents" },
+  { href: "/crons", label: "Crons" },
 ];
 
 const sysItems = [
