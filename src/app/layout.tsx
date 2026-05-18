@@ -29,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className="dark">
-      <body className="antialiased hermes-ui theme-dark theme-amber" style={{ background: "var(--color-bg-base)" }}>
+      <body className="antialiased hermes-ui theme-dark theme-accent" style={{ background: "var(--color-bg-base)" }}>
         <div className="hermes-shell" style={{ display: "flex", minHeight: "100vh" }}>
           {/* Mobile top bar */}
           <header className="mobile-bar">

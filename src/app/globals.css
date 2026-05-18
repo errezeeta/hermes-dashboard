@@ -18,7 +18,7 @@
   --color-border:       #2A2620;
   --color-border-warm:  #4A3A24;
 
-  --color-amber:        #D39B2A;
+  --color-accent:       #0ea5e9;
   --color-gold:         #F2C35B;
   --color-copper:       #B06A2A;
   --color-warm:         #9B723A;
@@ -29,7 +29,7 @@
   /* Semantic */
   --color-success:      #4A9A4A;
   --color-danger:       #B84A4A;
-  --color-warning:      #D39B2A;
+  --color-warning:      #0ea5e9;
 
   /* ── TIPOGRAFÍA ──────────────────────────── */
   --font-mono-display:  'Courier Prime', monospace;
@@ -55,7 +55,7 @@
 }
 
 :root {
-  --shadow-amber-glow: 0 0 30px rgba(211,155,42,0.15);
+  --shadow-accent-glow: 0 0 30px rgba(14,165,233,0.15);
   --shadow-red-glow:   0 0 20px rgba(169,58,42,0.1);
   --shadow-sm:         0 2px 8px rgba(0,0,0,0.4);
   --t-fast:   150ms ease;
@@ -101,18 +101,18 @@ body {
   --color-border-warm: #BCA989;
 }
 
-.theme-amber {
-  --color-amber: #22c55e;
-  --color-gold: #86efac;
-  --color-cyan: #0ea5e9;
-  --color-warm: #16a34a;
-}
-
-.theme-cyan {
-  --color-amber: #0ea5e9;
+.theme-accent {
+  --color-accent: #0ea5e9;
   --color-gold: #7dd3fc;
   --color-cyan: #22c55e;
   --color-warm: #0284c7;
+}
+
+.theme-cyan {
+  --color-accent: #22c55e;
+  --color-gold: #86efac;
+  --color-cyan: #0ea5e9;
+  --color-warm: #16a34a;
 }
 
 /* ── HERMES GLITCH SHELL ────── */
@@ -161,7 +161,7 @@ body {
 
 .theme-light .hermes-shell {
   background:
-    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(211,155,42,0.06), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(14,165,233,0.06), transparent 50%),
     radial-gradient(ellipse 50% 40% at 80% 20%, rgba(91,227,216,0.04), transparent 45%),
     linear-gradient(180deg, rgba(242,237,224,0.95), rgba(245,238,225,1));
 }
@@ -196,7 +196,7 @@ body {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 100% 40% at 50% 0%, rgba(211,155,42,0.08), transparent 60%);
+    radial-gradient(ellipse 100% 40% at 50% 0%, rgba(14,165,233,0.08), transparent 60%);
   pointer-events: none;
 }
 
@@ -207,7 +207,7 @@ body {
   top: 5%;
   bottom: 5%;
   width: 1px;
-  background: linear-gradient(180deg, transparent, var(--color-amber), transparent);
+  background: linear-gradient(180deg, transparent, var(--color-accent), transparent);
   opacity: 0.3;
   pointer-events: none;
 }
@@ -233,7 +233,7 @@ body {
 
 .sidebar-brand::before {
   content: '>';
-  color: var(--color-amber);
+  color: var(--color-accent);
   animation: blink 1s step-end infinite;
 }
 
@@ -279,12 +279,12 @@ body {
 .nav-link:hover {
   color: var(--color-text-muted);
   border-left-color: var(--color-border-warm);
-  background: rgba(211,155,42,0.03);
+  background: rgba(14,165,233,0.03);
 }
 
 .nav-link--active {
-  color: var(--color-amber);
-  border-left: 2px solid var(--color-amber);
+  color: var(--color-accent);
+  border-left: 2px solid var(--color-accent);
   padding-left: calc(var(--s-3) - 2px);
 }
 
@@ -295,7 +295,7 @@ body {
   top: 0;
   bottom: 0;
   width: 1px;
-  background: linear-gradient(180deg, transparent, var(--color-amber), transparent);
+  background: linear-gradient(180deg, transparent, var(--color-accent), transparent);
   opacity: 0.5;
 }
 
@@ -334,7 +334,7 @@ body {
   justify-content: space-between;
   width: 100%;
   padding: 6px 10px;
-  background: rgba(211,155,42,0.06);
+  background: rgba(14,165,233,0.06);
   border: 1px solid var(--color-border);
   border-radius: var(--r-base);
   font-family: 'IBM Plex Mono', monospace;
@@ -347,9 +347,9 @@ body {
 }
 
 .sidebar-theme-btn:hover {
-  border-color: var(--color-amber);
-  color: var(--color-amber);
-  background: rgba(211,155,42,0.1);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(14,165,233,0.1);
 }
 
 .sidebar-theme-row {
@@ -375,14 +375,14 @@ body {
 }
 
 .sidebar-theme-chip:hover {
-  border-color: var(--color-amber);
-  color: var(--color-amber);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .sidebar-theme-chip--active {
-  border-color: var(--color-amber);
-  color: var(--color-amber);
-  background: rgba(211,155,42,0.1);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  background: rgba(14,165,233,0.1);
 }
 
 /* ── MOBILE BAR ──────────────── */
@@ -411,7 +411,7 @@ body {
 
 .mobile-brand::before {
   content: '>';
-  color: var(--color-amber);
+  color: var(--color-accent);
 }
 
 .mobile-nav {
@@ -445,8 +445,8 @@ body {
 }
 
 .mobile-nav-link:hover {
-  color: var(--color-amber);
-  border-color: var(--color-amber);
+  color: var(--color-accent);
+  border-color: var(--color-accent);
 }
 
 /* ── CARD ────────────────────── */
@@ -467,14 +467,14 @@ body {
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--color-amber), transparent);
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
   opacity: 0.15;
   pointer-events: none;
 }
 
 .card:hover {
   border-color: var(--color-border-warm);
-  box-shadow: 0 0 20px rgba(211,155,42,0.05), inset 0 0 20px rgba(211,155,42,0.02);
+  box-shadow: 0 0 20px rgba(14,165,233,0.05), inset 0 0 20px rgba(14,165,233,0.02);
 }
 
 .theme-light .card {
@@ -489,8 +489,8 @@ body {
   gap: var(--s-2);
   padding: 9px 22px;
   background: transparent;
-  border: 1px solid var(--color-amber);
-  color: var(--color-amber);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
   font-family: var(--font-mono-body);
   font-size: 0.7rem;
   letter-spacing: 0.12em;
@@ -536,7 +536,7 @@ body {
 
 .status-dot--warning {
   background: var(--color-warning);
-  box-shadow: 0 0 6px rgba(211,155,42,0.5);
+  box-shadow: 0 0 6px rgba(14,165,233,0.5);
 }
 
 /* ── DATA TABLE ──────────────── */
@@ -564,7 +564,7 @@ body {
 }
 
 .data-table tbody tr:hover {
-  background: rgba(211,155,42,0.05);
+  background: rgba(14,165,233,0.05);
 }
 
 /* ── RESPONSIVE ──────────────── */

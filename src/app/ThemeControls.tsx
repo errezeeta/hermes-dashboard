@@ -2,28 +2,28 @@
 
 import { useEffect, useState } from "react";
 
-type ThemeState = { mode: "dark" | "light"; accent: "amber" | "cyan" };
+type ThemeState = { mode: "dark" | "light"; accent: "accent" | "cyan" };
 
 function readTheme(): ThemeState {
-  if (typeof window === "undefined") return { mode: "dark", accent: "amber" };
+  if (typeof window === "undefined") return { mode: "dark", accent: "accent" };
   try {
     const stored = window.localStorage.getItem("hb-theme");
-    if (!stored) return { mode: "dark", accent: "amber" };
+    if (!stored) return { mode: "dark", accent: "accent" };
     return JSON.parse(stored);
   } catch {
-    return { mode: "dark", accent: "amber" };
+    return { mode: "dark", accent: "accent" };
   }
 }
 
 function applyTheme(t: ThemeState) {
   const body = document.body;
-  body.classList.remove("theme-dark", "theme-light", "theme-amber", "theme-cyan");
+  body.classList.remove("theme-dark", "theme-light", "theme-accent", "theme-cyan");
   body.classList.add(`theme-${t.mode}`, `theme-${t.accent}`);
   window.localStorage.setItem("hb-theme", JSON.stringify(t));
 }
 
 export default function ThemeControls() {
-  const [theme, setTheme] = useState<ThemeState>({ mode: "dark", accent: "amber" });
+  const [theme, setTheme] = useState<ThemeState>({ mode: "dark", accent: "accent" });
 
   useEffect(() => {
     const t = readTheme();
@@ -55,16 +55,16 @@ export default function ThemeControls() {
       </div>
       <div className="sidebar-theme-row" style={{ marginTop: 4 }}>
         <button
-          className={`sidebar-theme-chip${theme.accent === "amber" ? " sidebar-theme-chip--active" : ""}`}
-          onClick={() => update({ ...theme, accent: "amber" })}
+          className={`sidebar-theme-chip${theme.accent === "accent" ? " sidebar-theme-chip--active" : ""}`}
+          onClick={() => update({ ...theme, accent: "accent" })}
         >
-          Amber
+          Blue
         </button>
         <button
           className={`sidebar-theme-chip${theme.accent === "cyan" ? " sidebar-theme-chip--active" : ""}`}
           onClick={() => update({ ...theme, accent: "cyan" })}
         >
-          Cyan
+          Green
         </button>
       </div>
     </div>
