@@ -58,13 +58,13 @@ export default function ThemeControls() {
           className={`sidebar-theme-chip${theme.accent === "accent" ? " sidebar-theme-chip--active" : ""}`}
           onClick={() => update({ ...theme, accent: "accent" })}
         >
-          Blue
+          Green
         </button>
         <button
           className={`sidebar-theme-chip${theme.accent === "cyan" ? " sidebar-theme-chip--active" : ""}`}
           onClick={() => update({ ...theme, accent: "cyan" })}
         >
-          Green
+          Pink
         </button>
       </div>
     </div>

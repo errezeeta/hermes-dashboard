@@ -16,13 +16,13 @@
 
 /* Auto glitch every 8s */
 .glitch::before {
-  color: #0ea5e9;
+  color: #33ff33;
   z-index: -1;
   animation: glitchAutoTop 8s infinite ease-in-out;
 }
 
 .glitch::after {
-  color: #f43f5e;
+  color: #ff3366;
   z-index: -2;
   animation: glitchAutoBottom 8s infinite ease-in-out;
 }
@@ -30,10 +30,12 @@
 /* Hover: override with much more intense glitch */
 .glitch:hover::before {
   animation: glitchHoverTop 0.8s ease-in-out;
+  color: #66ff66;
 }
 
 .glitch:hover::after {
   animation: glitchHoverBottom 0.8s ease-in-out;
+  color: #ff6699;
 }
 
 @keyframes glitchAutoTop {
