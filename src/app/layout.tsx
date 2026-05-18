@@ -54,7 +54,7 @@ export default function RootLayout({
             <div className="sidebar-logo">
               <a href="/" className="sidebar-brand">Marlonbot</a>
               <div className="sidebar-sub">
-                Dashboard <span style={{ color: "var(--color-amber)" }}>v0.1</span>
+                Dashboard <span style={{ color: "var(--color-accent)" }}>v0.1</span>
               </div>
               <div style={{ marginTop: "var(--s-4)", display: "flex", gap: "8px", alignItems: "center" }}>
                 <span className="status-dot status-dot--online"></span>

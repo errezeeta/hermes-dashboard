@@ -34,7 +34,7 @@ export default function AgentsPage() {
   return (
     <div className="page-container" style={{ maxWidth: "960px", margin: "0 auto" }}>
       <div className="fade-in" style={{ marginBottom: "var(--s-6)" }}>
-        <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-1)" }}>
+        <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-accent)", marginBottom: "var(--s-1)" }}>
           System
         </div>
         <div style={{ fontFamily: "'VT323', monospace", fontSize: "1.4rem", fontWeight: 700, color: "var(--color-text-primary)" }}>
@@ -87,7 +87,7 @@ export default function AgentsPage() {
 
       {/* Activity Log */}
       <div className="card fade-in" style={{ padding: "var(--s-4)" }}>
-        <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-3)" }}>
+        <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-accent)", marginBottom: "var(--s-3)" }}>
           Activity Log
         </div>
         {data?.logs && data.logs.length > 0 ? (

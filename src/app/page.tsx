@@ -113,7 +113,7 @@ export default function Home() {
       {/* Portfolio + Health */}
       <div className="fade-in" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "var(--s-3)", marginBottom: "var(--s-6)" }}>
         <div className="card" style={{ padding: "var(--s-4)", animationDelay: "80ms" }}>
-          <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-3)" }}>
+          <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-accent)", marginBottom: "var(--s-3)" }}>
             Tiburón — Portfolio
           </div>
           {portfolio?.items && portfolio.items.length > 0 ? (
@@ -139,7 +139,7 @@ export default function Home() {
         </div>
 
         <div className="card" style={{ padding: "var(--s-4)", animationDelay: "160ms" }}>
-          <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-3)" }}>
+          <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-accent)", marginBottom: "var(--s-3)" }}>
             JordiWild — Health
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--s-2)" }}>
@@ -159,7 +159,7 @@ export default function Home() {
       {/* News */}
       <div className="fade-in" style={{ animationDelay: "240ms" }}>
         <div className="card" style={{ padding: "var(--s-4)" }}>
-          <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-3)" }}>
+          <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-accent)", marginBottom: "var(--s-3)" }}>
             News — Latest
           </div>
           {news?.articles && news.articles.length > 0 ? (

@@ -56,9 +56,9 @@ export default function NewsPage() {
               cursor: "pointer",
               borderRadius: "var(--r-sm)",
               transition: "all var(--t-fast)",
-              background: filter === c.key ? "var(--color-amber)" : "transparent",
+              background: filter === c.key ? "var(--color-accent)" : "transparent",
               color: filter === c.key ? "var(--color-bg-base)" : "var(--color-text-muted)",
-              border: `1px solid ${filter === c.key ? "var(--color-amber)" : "var(--color-border)"}`,
+              border: `1px solid ${filter === c.key ? "var(--color-accent)" : "var(--color-border)"}`,
             }}
           >
             {c.label}

@@ -15,7 +15,7 @@ interface ActivityData {
 }
 
 const agentMeta: Record<string, { label: string; accent: string }> = {
-  "🦈 Tiburón": { label: "TIBURÓN", accent: "var(--color-amber)" },
+  "🦈 Tiburón": { label: "TIBURÓN", accent: "var(--color-accent)" },
   "💪 JordiWild": { label: "JORDIWILD", accent: "var(--color-success)" },
   "☝️🤓 News": { label: "NEWS", accent: "var(--color-gold)" },
   "🤖 System": { label: "SYSTEM", accent: "var(--color-text-muted)" },
