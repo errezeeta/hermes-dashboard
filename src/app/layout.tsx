@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import ThemeControls from "./ThemeControls";
 
 export const metadata: Metadata = {
-  title: "Hermes Dashboard",
+  title: "Marlonbot 0.1",
   description: "Multi-agent ecosystem control panel",
 };
 
@@ -12,6 +13,11 @@ const navItems = [
   { href: "/salud", label: "Salud" },
   { href: "/news", label: "News" },
   { href: "/actividad", label: "Actividad" },
+];
+
+const sysItems = [
+  { href: "/agents", label: "Agents" },
+  { href: "/crons", label: "Crons" },
 ];
 
 export default function RootLayout({
@@ -25,9 +31,7 @@ export default function RootLayout({
         <div className="hermes-shell" style={{ display: "flex", minHeight: "100vh" }}>
           {/* Mobile top bar */}
           <header className="mobile-bar">
-            <a href="/" className="mobile-brand">
-              <span className="glitch" data-text="HERMES">HERMES</span>
-            </a>
+            <a href="/" className="mobile-brand">MARLONBOT</a>
             <nav className="mobile-nav">
               {navItems.map((item) => (
                 <a key={item.href} href={item.href} className="mobile-nav-link">
@@ -38,96 +42,53 @@ export default function RootLayout({
           </header>
 
           {/* Sidebar (desktop) */}
-          <aside
-            className="sidebar"
-            style={{
-              width: "240px",
-              borderRight: "1px solid var(--color-border)",
-              background: "linear-gradient(180deg, rgba(17,17,19,0.96), rgba(12,12,14,0.96))",
-              display: "flex",
-              flexDirection: "column",
-              flexShrink: 0,
-              position: "relative",
-              overflow: "hidden",
-            }}
-          >
-            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 20% 10%, rgba(211,155,42,0.12), transparent 45%)", pointerEvents: "none" }} />
+          <aside className="sidebar" style={{ width: "240px" }}>
             {/* Logo */}
-            <div style={{ padding: "var(--s-6)", borderBottom: "1px solid var(--color-border)" }}>
-              <a
-                href="/"
-                style={{
-                  fontFamily: "'Courier Prime', monospace",
-                  fontSize: "0.9rem",
-                  fontWeight: 600,
-                  color: "var(--color-text-primary)",
-                  textDecoration: "none",
-                  letterSpacing: "0.05em",
-                }}
-              >
-                <span className="glitch" data-text="HERMES">HERMES</span>
-              </a>
-              <div
-                style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: "0.65rem",
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  color: "var(--color-text-muted)",
-                  marginTop: "4px",
-                }}
-              >
-                Dashboard v0.1
+            <div className="sidebar-logo">
+              <a href="/" className="sidebar-brand">MARLONBOT</a>
+              <div className="sidebar-sub">
+                Dashboard <span style={{ color: "var(--color-amber)" }}>v0.1</span>
               </div>
-              <div style={{ marginTop: "var(--s-4)", fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
-                NODE: LOCAL
+              <div style={{ marginTop: "var(--s-4)", display: "flex", gap: "8px", alignItems: "center" }}>
+                <span className="status-dot status-dot--online"></span>
+                <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
+                  System Online
+                </span>
               </div>
             </div>
 
             {/* Nav */}
-            <nav style={{ flex: 1, padding: "var(--s-4)", display: "flex", flexDirection: "column", gap: "6px" }}>
+            <nav className="sidebar-nav">
+              <div className="nav-section-title">Navigation</div>
               {navItems.map((item) => (
-                <NavKey key={item.href} href={item.href} label={item.label} />
+                <a key={item.href} href={item.href} className="nav-link">
+                  {item.label}
+                </a>
+              ))}
+              <div className="nav-section-title" style={{ marginTop: "var(--s-3)" }}>System</div>
+              {sysItems.map((item) => (
+                <a key={item.href} href={item.href} className="nav-link">
+                  {item.label}
+                </a>
               ))}
             </nav>
 
-            {/* Status */}
-            <div style={{ padding: "var(--s-4)", borderTop: "1px solid var(--color-border)" }}>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "6px",
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: "0.65rem",
-                  letterSpacing: "0.08em",
-                  textTransform: "uppercase",
-                  color: "var(--color-text-muted)",
-                }}
-              >
+            {/* Footer */}
+            <div className="sidebar-footer">
+              <div className="sidebar-status">
                 <span className="status-dot status-dot--online"></span>
                 Gateway
               </div>
-              <div style={{ marginTop: "var(--s-2)", fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
-                AUTH: OK
-              </div>
+              <ThemeControls />
             </div>
           </aside>
 
           {/* Main */}
-          <main style={{ flex: 1, overflowY: "auto" }}>
+          <main style={{ flex: 1, overflowY: "auto", position: "relative", zIndex: 2 }}>
             {children}
           </main>
         </div>
       </body>
     </html>
-  );
-}
-
-function NavKey({ href, label }: { href: string; label: string }) {
-  return (
-    <a href={href} className="nav-link">
-      {label}
-    </a>
   );
 }

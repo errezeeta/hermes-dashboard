@@ -28,16 +28,6 @@ export default function Home() {
   const [news, setNews] = useState<NewsData | null>(null);
   const [loading, setLoading] = useState(true);
   const [system, setSystem] = useState<{ cron_text?: string; cron_lines?: string[] } | null>(null);
-  const [theme, setTheme] = useState(() => {
-    if (typeof window === "undefined") return { mode: "dark", accent: "amber" };
-    const stored = window.localStorage.getItem("hb-theme");
-    if (!stored) return { mode: "dark", accent: "amber" };
-    try {
-      return JSON.parse(stored);
-    } catch {
-      return { mode: "dark", accent: "amber" };
-    }
-  });
 
   useEffect(() => {
     Promise.all([
@@ -61,13 +51,6 @@ export default function Home() {
     }, 30000);
     return () => clearInterval(interval);
   }, []);
-
-  useEffect(() => {
-    const body = document.body;
-    body.classList.remove("theme-dark", "theme-light", "theme-amber", "theme-cyan");
-    body.classList.add(`theme-${theme.mode}`, `theme-${theme.accent}`);
-    window.localStorage.setItem("hb-theme", JSON.stringify(theme));
-  }, [theme]);
 
   if (loading) {
     return (
@@ -103,30 +86,6 @@ export default function Home() {
           <div className="header-cards" style={{ display: "flex", flexDirection: "column", gap: "var(--s-3)", minWidth: "220px" }}>
             <div className="card" style={{ padding: "var(--s-4)" }}>
               <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
-                Theme
-              </div>
-              <div style={{ display: "flex", gap: "var(--s-2)", marginTop: "var(--s-3)" }}>
-                <button
-                  className="btn-amber"
-                  type="button"
-                  onClick={() => setTheme((t: any) => ({ ...t, mode: t.mode === "dark" ? "light" : "dark" }))}
-                  style={{ fontSize: "0.7rem", padding: "8px 16px" }}
-                >
-                  {theme.mode === "dark" ? "Light" : "Dark"}
-                </button>
-                <button
-                  className="btn-amber"
-                  type="button"
-                  onClick={() => setTheme((t: any) => ({ ...t, accent: t.accent === "amber" ? "cyan" : "amber" }))}
-                  style={{ fontSize: "0.7rem", padding: "8px 16px", borderColor: "var(--color-cyan)", color: "var(--color-cyan)" }}
-                >
-                  {theme.accent === "amber" ? "Cyan" : "Amber"}
-                </button>
-              </div>
-            </div>
-
-            <div className="card" style={{ padding: "var(--s-4)" }}>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
                 Automations
               </div>
               {system?.cron_lines && system.cron_lines.length > 0 ? (
@@ -157,7 +116,6 @@ export default function Home() {
 
       {/* Portfolio + Health */}
       <div className="fade-in" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "var(--s-4)", marginBottom: "var(--s-12)" }}>
-        {/* Portfolio */}
         <div className="card" style={{ animationDelay: "80ms" }}>
           <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-4)" }}>
             Tiburón — Portfolio
@@ -184,7 +142,6 @@ export default function Home() {
           )}
         </div>
 
-        {/* Health */}
         <div className="card" style={{ animationDelay: "160ms" }}>
           <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-4)" }}>
             JordiWild — Health
