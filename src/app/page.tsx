@@ -75,7 +75,7 @@ export default function Home() {
           </p>
           <div style={{ display: "flex", gap: "var(--s-3)", marginTop: "var(--s-3)", flexWrap: "wrap", alignItems: "center" }}>
             <a className="btn-amber" href="/cartera">Open Console</a>
-            <a className="btn-amber" href="/actividad" style={{ borderColor: "var(--color-cyan)", color: "var(--color-cyan)" }}>Live Signal</a>
+            <a className="btn-amber" href="/actividad">Live Signal</a>
           </div>
         </div>
       </div>
