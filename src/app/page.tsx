@@ -71,7 +71,7 @@ export default function Home() {
             <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-1)" }}>
               System Status
             </div>
-            <div className="glitch" data-text="MARLONBOT 0.1" style={{ fontFamily: "'Jacquard 24 Charted', monospace", fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", color: "var(--color-text-primary)", letterSpacing: "0.04em", lineHeight: 1.2, margin: 0 }}>
+            <div className="glitch" data-text="MARLONBOT 0.1" style={{ fontFamily: "'Jacquard 12', monospace", fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", color: "var(--color-text-primary)", letterSpacing: "0.04em", lineHeight: 1.2, margin: 0 }}>
               Marlonbot 0.1
             </div>
             <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-muted)", marginTop: "var(--s-1)", lineHeight: 1.5 }}>
