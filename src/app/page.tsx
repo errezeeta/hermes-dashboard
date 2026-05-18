@@ -31,36 +31,26 @@ export default function Home() {
 
   useEffect(() => {
     Promise.all([
-      fetch("/api/cartera").then(r => r.json()),
-      fetch("/api/salud").then(r => r.json()),
-      fetch("/api/news").then(r => r.json()),
-      fetch("/api/agents").then(r => r.json()),
+      fetch("/api/cartera").then(r => r.json()).catch(() => null),
+      fetch("/api/salud").then(r => r.json()).catch(() => null),
+      fetch("/api/news").then(r => r.json()).catch(() => null),
+      fetch("/api/agents").then(r => r.json()).catch(() => null),
     ]).then(([p, h, n, s]) => {
-      setPortfolio(p);
-      setHealth(h);
-      setNews(n);
-      setSystem(s);
+      if (p) setPortfolio(p);
+      if (h) setHealth(h);
+      if (n) setNews(n);
+      if (s) setSystem(s);
       setLoading(false);
     });
 
     const interval = setInterval(() => {
-      fetch("/api/cartera").then(r => r.json()).then(setPortfolio);
-      fetch("/api/salud").then(r => r.json()).then(setHealth);
-      fetch("/api/news").then(r => r.json()).then(setNews);
-      fetch("/api/agents").then(r => r.json()).then(setSystem);
+      fetch("/api/cartera").then(r => r.json()).then(setPortfolio).catch(() => {});
+      fetch("/api/salud").then(r => r.json()).then(setHealth).catch(() => {});
+      fetch("/api/news").then(r => r.json()).then(setNews).catch(() => {});
+      fetch("/api/agents").then(r => r.json()).then(setSystem).catch(() => {});
     }, 30000);
     return () => clearInterval(interval);
   }, []);
-
-  if (loading) {
-    return (
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
-        <span style={{ color: "var(--color-text-muted)", fontFamily: "'VT323', monospace", fontSize: "0.875rem" }}>
-          initializing...
-        </span>
-      </div>
-    );
-  }
 
   return (
     <div className="page-container" style={{ maxWidth: "960px", margin: "0 auto" }}>
