@@ -1,31 +1,35 @@
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
+@import "./glitch.css";
 
 @theme {
   /* ── COLORES ─────────────────────────────── */
   --color-bg-base:      #0A0A0B;
   --color-bg-surface:   #111113;
-  --color-bg-overlay:   #1A1A1D;
-  --color-bg-elevated:  #161618;
+  --color-bg-overlay:   #16161A;
+  --color-bg-elevated:  #141417;
   --color-code-bg:      #0D0D0E;
   --color-tag-bg:       #1C1A16;
 
-  --color-text-primary: #E8E3D5;
-  --color-text-muted:   #7A7468;
+  --color-text-primary: #EDE6D6;
+  --color-text-muted:   #8B8374;
   --color-text-faint:   #3D3A35;
 
-  --color-border:       #252420;
-  --color-border-warm:  #3A3020;
+  --color-border:       #2A2620;
+  --color-border-warm:  #4A3A24;
 
-  --color-amber:        #C8922A;
-  --color-gold:         #E8B84B;
-  --color-copper:       #A0662A;
-  --color-warm:         #8B6A3A;
+  --color-amber:        #D39B2A;
+  --color-gold:         #F2C35B;
+  --color-copper:       #B06A2A;
+  --color-warm:         #9B723A;
+  --color-red:          #A93A2A;
+  --color-red-soft:     #6B2A24;
+  --color-cyan:         #5BE3D8;
 
   /* Semantic */
   --color-success:      #4A9A4A;
   --color-danger:       #B84A4A;
-  --color-warning:      #C8922A;
+  --color-warning:      #D39B2A;
 
   /* ── TIPOGRAFÍA ──────────────────────────── */
   --font-mono-display:  'Courier Prime', monospace;
@@ -49,13 +53,15 @@
   --r-md:   6px;
 
   /* ── SOMBRAS ─────────────────────────────── */
-  --shadow-amber-glow: 0 0 24px rgba(200,146,42,0.12);
+  --shadow-amber-glow: 0 0 28px rgba(211,155,42,0.18);
+  --shadow-red-glow:   0 0 20px rgba(169,58,42,0.12);
   --shadow-sm:         0 2px 8px rgba(0,0,0,0.4);
 
   /* ── TRANSICIONES ────────────────────────── */
   --t-fast:   150ms ease;
   --t-base:   250ms ease;
   --t-slow:   400ms ease;
+  --t-glitch: 1200ms steps(2, end);
 }
 
 * {
@@ -70,6 +76,88 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── THEMES (light/dark + amber/cyan) ───────────────── */
+.theme-dark {
+  --color-bg-base: #0A0A0B;
+  --color-bg-surface: #111113;
+  --color-bg-overlay: #16161A;
+  --color-bg-elevated: #141417;
+  --color-text-primary: #EDE6D6;
+  --color-text-muted: #8B8374;
+  --color-border: #2A2620;
+  --color-border-warm: #4A3A24;
+}
+
+.theme-light {
+  --color-bg-base: #F6F1E6;
+  --color-bg-surface: #FCF7EE;
+  --color-bg-overlay: #F2EBDD;
+  --color-bg-elevated: #F9F2E4;
+  --color-text-primary: #1D1812;
+  --color-text-muted: #6F665A;
+  --color-border: #D2C7B5;
+  --color-border-warm: #C2B090;
+}
+
+.theme-amber {
+  --color-amber: #D39B2A;
+  --color-gold: #F2C35B;
+  --color-cyan: #5BE3D8;
+  --color-warm: #9B723A;
+}
+
+.theme-cyan {
+  --color-amber: #7AD5FF;
+  --color-gold: #B3E7FF;
+  --color-cyan: #5BE3D8;
+  --color-warm: #5A88A5;
+}
+
+/* ── HERMES GLITCH SHELL ─────────────────── */
+.hermes-ui {
+  position: relative;
+}
+
+.hermes-shell {
+  position: relative;
+  z-index: 0;
+  background-image:
+    linear-gradient(180deg, rgba(0,0,0,0.5), transparent 40%),
+    radial-gradient(circle at 12% 12%, rgba(211,155,42,0.08), transparent 45%),
+    radial-gradient(circle at 88% 18%, rgba(91,227,216,0.06), transparent 40%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg fill='none' stroke='rgba(211,155,42,0.12)' stroke-width='1'%3E%3Cpath d='M0 44H220M0 110H220M0 176H220M44 0V220M110 0V220M176 0V220'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: auto, auto, auto, 220px 220px;
+}
+
+.hermes-shell::before,
+.hermes-shell::after {
+  pointer-events: none;
+}
+
+.hermes-shell::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(211,155,42,0.06), transparent 45%),
+    radial-gradient(circle at 80% 30%, rgba(169,58,42,0.08), transparent 40%),
+    radial-gradient(circle at 60% 80%, rgba(91,227,216,0.04), transparent 35%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hermes-shell::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(211,155,42,0.04), transparent 55%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.55;
+  animation: huePulse 12s ease-in-out infinite;
 }
 
 /* ── SCROLLBAR ────────────────────────────── */
@@ -91,7 +179,19 @@ body::before {
     rgba(0,0,0,0.03) 4px
   );
   pointer-events: none;
-  z-index: 9999;
+  z-index: 3;
+}
+
+.hermes-ui::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='1'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+  opacity: 0.25;
+  pointer-events: none;
+  z-index: 2;
+  animation: noiseShift 0.35s steps(2, end) infinite;
 }
 
 /* ── BADGE / PILL ─────────────────────────── */
@@ -117,16 +217,38 @@ body::before {
 
 /* ── CARDS ────────────────────────────────── */
 .card {
-  background: var(--color-bg-surface);
+  background: linear-gradient(145deg, rgba(18,18,20,0.9), rgba(12,12,14,0.95));
   border: 1px solid var(--color-border);
   border-radius: var(--r-base);
   padding: var(--s-8);
-  transition: border-color var(--t-slow), box-shadow var(--t-slow);
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--t-slow), box-shadow var(--t-slow), transform var(--t-fast);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(211,155,42,0.15);
+  opacity: 0;
+  transition: opacity var(--t-slow);
+  pointer-events: none;
 }
 
 .card:hover {
   border-color: var(--color-border-warm);
-  box-shadow: 0 0 32px rgba(200,146,42,0.06);
+  box-shadow: 0 0 32px rgba(211,155,42,0.12);
+  transform: translateY(-2px);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.theme-light .card {
+  background: linear-gradient(145deg, rgba(252,247,238,0.95), rgba(242,235,221,0.95));
+  border-color: rgba(194,176,144,0.8);
 }
 
 /* ── TERMINAL BLOCK ───────────────────────── */
@@ -157,13 +279,28 @@ body::before {
   cursor: pointer;
   text-decoration: none;
   border-radius: var(--r-sm);
+  position: relative;
+  overflow: hidden;
   transition: background var(--t-base), color var(--t-base), box-shadow var(--t-slow);
+}
+
+.btn-amber::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent, rgba(211,155,42,0.35), transparent);
+  transform: translateX(-120%);
+  transition: transform var(--t-slow);
 }
 
 .btn-amber:hover {
   background: var(--color-amber);
   color: var(--color-bg-base);
-  box-shadow: 0 0 20px rgba(200,146,42,0.3);
+  box-shadow: 0 0 20px rgba(211,155,42,0.35);
+}
+
+.btn-amber:hover::after {
+  transform: translateX(120%);
 }
 
 /* ── FADE-IN ANIMATION ────────────────────── */
@@ -242,17 +379,38 @@ a:hover {
   color: var(--color-text-muted);
   border-radius: var(--r-sm);
   transition: color var(--t-fast), background var(--t-fast);
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  bottom: 4px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(211,155,42,0.6), transparent);
+  opacity: 0;
+  transition: opacity var(--t-fast);
 }
 
 .nav-link:hover {
   color: var(--color-amber);
-  background: rgba(200,146,42,0.05);
+  background: rgba(211,155,42,0.08);
+}
+
+.nav-link:hover::after {
+  opacity: 1;
 }
 
 .nav-link--active {
   color: var(--color-amber);
   border-left: 2px solid var(--color-amber);
   padding-left: calc(var(--s-3) - 2px);
+}
+
+.nav-link--active::after {
+  opacity: 1;
 }
 
 /* ── TABLE ────────────────────────────────── */
@@ -280,7 +438,7 @@ a:hover {
 }
 
 .data-table tbody tr:hover {
-  background: rgba(200,146,42,0.03);
+  background: rgba(211,155,42,0.05);
 }
 
 .data-table tbody tr:last-child td {

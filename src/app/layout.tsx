@@ -21,8 +21,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className="dark">
-      <body className="antialiased" style={{ background: "var(--color-bg-base)" }}>
-        <div style={{ display: "flex", minHeight: "100vh" }}>
+      <body className="antialiased hermes-ui theme-dark theme-amber" style={{ background: "var(--color-bg-base)" }}>
+        <div className="hermes-shell" style={{ display: "flex", minHeight: "100vh" }}>
           {/* Sidebar */}
           <aside
             style={{

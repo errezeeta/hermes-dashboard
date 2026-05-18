@@ -65,12 +65,16 @@ export default function Home() {
         <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-3)" }}>
           System Status
         </div>
-        <h1 style={{ fontFamily: "'Courier Prime', monospace", fontSize: "clamp(1.8rem, 4vw, 2.5rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "-0.02em", lineHeight: 1.1, margin: 0 }}>
+        <h1 className="glitch" data-text="Hermes Dashboard" style={{ fontFamily: "'Courier Prime', monospace", fontSize: "clamp(2.1rem, 5vw, 3.2rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "-0.02em", lineHeight: 1.05, margin: 0 }}>
           Hermes Dashboard
         </h1>
-        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)", lineHeight: 1.6 }}>
-          Multi-agent ecosystem control panel. Local-first.
+        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.9rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)", lineHeight: 1.6 }}>
+          Multi-agent ecosystem control panel. Local-first. Noisy by design.
         </p>
+        <div style={{ display: "flex", gap: "var(--s-3)", marginTop: "var(--s-4)", flexWrap: "wrap" }}>
+          <a className="btn-amber" href="/cartera">Open Console</a>
+          <a className="btn-amber" href="/actividad" style={{ borderColor: "var(--color-cyan)", color: "var(--color-cyan)" }}>Live Signal</a>
+        </div>
       </div>
 
       {/* Summary Cards */}
