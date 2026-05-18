@@ -3,6 +3,22 @@ import { readTextFile } from "@/lib/python";
 
 export async function GET() {
   try {
+    const kvUrl = process.env.KV_REST_API_URL;
+    const kvToken = process.env.KV_REST_API_TOKEN;
+    if (kvUrl && kvToken) {
+      const res = await fetch(`${kvUrl}/get/dashboard:system`, {
+        headers: { Authorization: `Bearer ${kvToken}` },
+      });
+      const data = await res.json();
+      if (data?.result) {
+        const parsed = JSON.parse(data.result);
+        if (parsed?.value) {
+          return NextResponse.json(JSON.parse(parsed.value));
+        }
+        return NextResponse.json(parsed);
+      }
+    }
+
     const log = await readTextFile(process.env.HOME + "/.hermes/logs/gateway.log");
     const lines = log.split("\n").filter(Boolean).reverse().slice(0, 30);
 
