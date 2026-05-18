@@ -27,7 +27,7 @@ export default function Home() {
   const [health, setHealth] = useState<HealthData | null>(null);
   const [news, setNews] = useState<NewsData | null>(null);
   const [loading, setLoading] = useState(true);
-  const [system, setSystem] = useState<{ cron_text?: string } | null>(null);
+  const [system, setSystem] = useState<{ cron_text?: string; cron_lines?: string[] } | null>(null);
   const [theme, setTheme] = useState(() => {
     if (typeof window === "undefined") return { mode: "dark", accent: "amber" };
     const stored = window.localStorage.getItem("hb-theme");
@@ -129,9 +129,19 @@ export default function Home() {
               <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
                 Automations
               </div>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-primary)", marginTop: "var(--s-2)" }}>
-                {system?.cron_text ? "active" : "loading"}
-              </div>
+              {system?.cron_lines && system.cron_lines.length > 0 ? (
+                <div style={{ marginTop: "var(--s-2)", display: "grid", gap: "6px" }}>
+                  {system.cron_lines.slice(0, 8).map((line, idx) => (
+                    <div key={idx} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.7rem", color: "var(--color-text-primary)", borderBottom: "1px dashed var(--color-border)", paddingBottom: "4px" }}>
+                      {line}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-primary)", marginTop: "var(--s-2)" }}>
+                  loading
+                </div>
+              )}
             </div>
           </div>
         </div>
