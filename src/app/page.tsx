@@ -80,7 +80,7 @@ export default function Home() {
   }
 
   return (
-    <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)" }}>
+    <div className="page-container" style={{ maxWidth: "960px", margin: "0 auto" }}>
       {/* Header */}
       <div className="fade-in" style={{ marginBottom: "var(--s-12)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "var(--s-6)", flexWrap: "wrap" }}>
@@ -100,7 +100,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "var(--s-3)", minWidth: "220px" }}>
+          <div className="header-cards" style={{ display: "flex", flexDirection: "column", gap: "var(--s-3)", minWidth: "220px" }}>
             <div className="card" style={{ padding: "var(--s-4)" }}>
               <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
                 Theme
@@ -148,7 +148,7 @@ export default function Home() {
       </div>
 
       {/* Summary Cards */}
-      <div className="fade-in" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--s-4)", marginBottom: "var(--s-12)" }}>
+      <div className="fade-in metric-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--s-4)", marginBottom: "var(--s-12)" }}>
         <MetricCard label="CARTERA TOTAL" value={`€${portfolio?.total_current?.toFixed(2) ?? "0"}`} sub={portfolio?.total_pnl_pct != null ? `${portfolio.total_pnl >= 0 ? "+" : ""}${portfolio.total_pnl_pct}%` : undefined} positive={portfolio?.total_pnl != null && portfolio.total_pnl >= 0} delay={0} />
         <MetricCard label="PASOS HOY" value={health?.steps?.today?.toLocaleString() ?? "—"} sub={`media 7d: ${Math.round(health?.steps?.avg7d ?? 0).toLocaleString()}`} delay={80} />
         <MetricCard label="NOTICIAS" value={news?.total?.toString() ?? "0"} sub="artículos" delay={160} />

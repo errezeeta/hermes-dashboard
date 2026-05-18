@@ -23,8 +23,23 @@ export default function RootLayout({
     <html lang="es" className="dark">
       <body className="antialiased hermes-ui theme-dark theme-amber" style={{ background: "var(--color-bg-base)" }}>
         <div className="hermes-shell" style={{ display: "flex", minHeight: "100vh" }}>
-          {/* Sidebar */}
+          {/* Mobile top bar */}
+          <header className="mobile-bar">
+            <a href="/" className="mobile-brand">
+              <span className="glitch" data-text="HERMES">HERMES</span>
+            </a>
+            <nav className="mobile-nav">
+              {navItems.map((item) => (
+                <a key={item.href} href={item.href} className="mobile-nav-link">
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          </header>
+
+          {/* Sidebar (desktop) */}
           <aside
+            className="sidebar"
             style={{
               width: "240px",
               borderRight: "1px solid var(--color-border)",
