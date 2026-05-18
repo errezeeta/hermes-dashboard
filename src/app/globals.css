@@ -374,7 +374,15 @@ body {
   background-image: url("/ascii-bg-static.png");
   background-size: cover;
   background-position: center;
-  filter: sepia(1) hue-rotate(60deg) saturate(3) brightness(0.3) contrast(1.2);
+}
+
+.theme-cyan .bg-video,
+.theme-cyan .bg-static {
+  filter: sepia(1) hue-rotate(300deg) saturate(3) brightness(0.3) contrast(1.2);
+}
+
+.theme-cyan .hermes-shell::before {
+  filter: sepia(1) hue-rotate(300deg) saturate(3) brightness(0.3) contrast(1.2);
 }
 
 .theme-light .bg-video,
