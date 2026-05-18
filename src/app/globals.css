@@ -306,15 +306,17 @@ body::before {
 /* ── FADE-IN ANIMATION ────────────────────── */
 .fade-in {
   opacity: 0;
-  transform: translateY(16px);
-  animation: fadeIn 0.6s ease forwards;
+  animation: glitchIn 0.9s ease forwards;
+  filter: drop-shadow(0 0 12px rgba(211,155,42,0.08));
 }
 
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes glitchIn {
+  0% { opacity: 0; transform: translateY(0) skewX(0deg); }
+  20% { opacity: 0.35; transform: translateY(0) skewX(0.5deg); }
+  35% { opacity: 0.75; transform: translateY(0) skewX(-0.4deg); }
+  50% { opacity: 0.45; transform: translateY(0) skewX(0.2deg); }
+  70% { opacity: 0.9; transform: translateY(0) skewX(-0.2deg); }
+  100% { opacity: 1; transform: translateY(0) skewX(0deg); }
 }
 
 /* stagger delays via inline style or nth-child in page */
@@ -380,6 +382,8 @@ a:hover {
   border-radius: var(--r-sm);
   transition: color var(--t-fast), background var(--t-fast);
   position: relative;
+  background: linear-gradient(90deg, rgba(211,155,42,0.05), transparent 60%);
+  border: 1px solid transparent;
 }
 
 .nav-link::after {
@@ -397,6 +401,8 @@ a:hover {
 .nav-link:hover {
   color: var(--color-amber);
   background: rgba(211,155,42,0.08);
+  border-color: rgba(211,155,42,0.25);
+  box-shadow: 0 0 18px rgba(211,155,42,0.12);
 }
 
 .nav-link:hover::after {
@@ -405,8 +411,8 @@ a:hover {
 
 .nav-link--active {
   color: var(--color-amber);
-  border-left: 2px solid var(--color-amber);
-  padding-left: calc(var(--s-3) - 2px);
+  border: 1px solid rgba(211,155,42,0.35);
+  box-shadow: 0 0 18px rgba(211,155,42,0.18);
 }
 
 .nav-link--active::after {

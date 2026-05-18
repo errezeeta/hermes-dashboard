@@ -26,14 +26,17 @@ export default function RootLayout({
           {/* Sidebar */}
           <aside
             style={{
-              width: "200px",
+              width: "240px",
               borderRight: "1px solid var(--color-border)",
-              background: "var(--color-bg-surface)",
+              background: "linear-gradient(180deg, rgba(17,17,19,0.96), rgba(12,12,14,0.96))",
               display: "flex",
               flexDirection: "column",
               flexShrink: 0,
+              position: "relative",
+              overflow: "hidden",
             }}
           >
+            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 20% 10%, rgba(211,155,42,0.12), transparent 45%)", pointerEvents: "none" }} />
             {/* Logo */}
             <div style={{ padding: "var(--s-6)", borderBottom: "1px solid var(--color-border)" }}>
               <a
@@ -47,7 +50,7 @@ export default function RootLayout({
                   letterSpacing: "0.05em",
                 }}
               >
-                HERMES
+                <span className="glitch" data-text="HERMES">HERMES</span>
               </a>
               <div
                 style={{
@@ -61,10 +64,13 @@ export default function RootLayout({
               >
                 Dashboard v0.1
               </div>
+              <div style={{ marginTop: "var(--s-4)", fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
+                NODE: LOCAL
+              </div>
             </div>
 
             {/* Nav */}
-            <nav style={{ flex: 1, padding: "var(--s-4)", display: "flex", flexDirection: "column", gap: "2px" }}>
+            <nav style={{ flex: 1, padding: "var(--s-4)", display: "flex", flexDirection: "column", gap: "6px" }}>
               {navItems.map((item) => (
                 <NavKey key={item.href} href={item.href} label={item.label} />
               ))}
@@ -86,6 +92,9 @@ export default function RootLayout({
               >
                 <span className="status-dot status-dot--online"></span>
                 Gateway
+              </div>
+              <div style={{ marginTop: "var(--s-2)", fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
+                AUTH: OK
               </div>
             </div>
           </aside>
