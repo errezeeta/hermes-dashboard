@@ -30,6 +30,9 @@ export default function RootLayout({
   return (
     <html lang="es" className="dark">
       <body className="antialiased hermes-ui theme-dark theme-accent" style={{ background: "var(--color-bg-base)" }}>
+        <script dangerouslySetInnerHTML={{
+          __html: `(function(){try{var t=JSON.parse(localStorage.getItem('hb-theme')||'{}');if(t.mode&&t.accent){document.body.classList.remove('theme-dark','theme-accent');document.body.classList.add('theme-'+t.mode,'theme-'+t.accent);}}catch(e){}})()`
+        }} />
         <div className="hermes-shell" style={{ display: "flex", minHeight: "100vh" }}>
           {/* Mobile top bar */}
           <header className="mobile-bar">
