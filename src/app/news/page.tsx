@@ -33,10 +33,10 @@ export default function NewsPage() {
     <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)" }}>
       <div className="fade-in" style={{ marginBottom: "var(--s-8)" }}>
         <div className="step-label" style={{ marginBottom: "var(--s-3)" }}>News</div>
-        <h1 style={{ fontFamily: "'Courier Prime', monospace", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "-0.02em", lineHeight: 1.1, margin: 0 }}>
+        <h1 style={{ fontFamily: "'VT323', monospace", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "-0.02em", lineHeight: 1.1, margin: 0 }}>
           RSS Feed
         </h1>
-        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)" }}>
+        <p style={{ fontFamily: "'VT323', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)" }}>
           {data?.total} unread articles from monitored sources.
         </p>
       </div>
@@ -49,7 +49,7 @@ export default function NewsPage() {
             onClick={() => setFilter(c.key)}
             style={{
               padding: "4px 10px",
-              fontFamily: "'IBM Plex Mono', monospace",
+              fontFamily: "'VT323', monospace",
               fontSize: "0.7rem",
               letterSpacing: "0.1em",
               textTransform: "uppercase",
@@ -73,7 +73,7 @@ export default function NewsPage() {
             <div key={i} className="card" style={{ padding: "var(--s-4)", animationDelay: `${i * 60}ms` }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "var(--s-4)" }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-primary)", lineHeight: 1.5 }}>
+                  <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.875rem", color: "var(--color-text-primary)", lineHeight: 1.5 }}>
                     {article.title}
                   </div>
                 </div>
@@ -84,7 +84,7 @@ export default function NewsPage() {
             </div>
           ))
         ) : (
-          <div style={{ textAlign: "center", padding: "var(--s-16)", color: "var(--color-text-muted)", fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem" }}>
+          <div style={{ textAlign: "center", padding: "var(--s-16)", color: "var(--color-text-muted)", fontFamily: "'VT323', monospace", fontSize: "0.875rem" }}>
             No articles in this category
           </div>
         )}
@@ -96,7 +96,7 @@ export default function NewsPage() {
 function Loading() {
   return (
     <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
-      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>loading news...</span>
+      <span style={{ fontFamily: "'VT323', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>loading news...</span>
     </div>
   );
 }

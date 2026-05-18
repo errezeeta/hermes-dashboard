@@ -53,7 +53,7 @@ export default function RootLayout({
               </div>
               <div style={{ marginTop: "var(--s-4)", display: "flex", gap: "8px", alignItems: "center" }}>
                 <span className="status-dot status-dot--online"></span>
-                <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
+                <span style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.08em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
                   System Online
                 </span>
               </div>

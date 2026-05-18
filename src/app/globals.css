@@ -32,7 +32,7 @@
   --color-warning:      #0ea5e9;
 
   /* ── TIPOGRAFÍA ──────────────────────────── */
-  --font-mono-display:  'Courier Prime', monospace;
+  --font-mono-display:  'VT323', monospace;
   --font-mono-body:     'VT323', monospace;
   --font-mono-code:     'Share Tech Mono', monospace;
 
@@ -401,7 +401,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-family: 'Courier Prime', monospace;
+  font-family: 'VT323', monospace;
   font-size: 0.85rem;
   color: var(--color-text-primary);
   text-decoration: none;
@@ -470,6 +470,21 @@ body {
   background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
   opacity: 0.15;
   pointer-events: none;
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(14,165,233,0.02) 1px,
+    rgba(14,165,233,0.02) 2px
+  );
+  pointer-events: none;
+  z-index: 1;
 }
 
 .card:hover {

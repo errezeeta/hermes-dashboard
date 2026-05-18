@@ -28,10 +28,10 @@ export default function CarteraPage() {
     <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)" }}>
       <div className="fade-in" style={{ marginBottom: "var(--s-12)" }}>
         <div className="step-label" style={{ marginBottom: "var(--s-3)" }}>Tiburón</div>
-        <h1 style={{ fontFamily: "'Courier Prime', monospace", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "-0.02em", lineHeight: 1.1, margin: 0 }}>
+        <h1 style={{ fontFamily: "'VT323', monospace", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "-0.02em", lineHeight: 1.1, margin: 0 }}>
           Portfolio
         </h1>
-        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)" }}>
+        <p style={{ fontFamily: "'VT323', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)" }}>
           Revolut holdings + crypto. Prices via Yahoo Finance / CoinGecko.
         </p>
       </div>
@@ -77,12 +77,12 @@ export default function CarteraPage() {
             <tbody>
               {data.items.map((item) => (
                 <tr key={item.ticker}>
-                  <td style={{ fontFamily: "'Courier Prime', monospace", fontWeight: 600 }}>{item.ticker}</td>
-                  <td style={{ textAlign: "right", fontFamily: "'IBM Plex Mono', monospace", color: "var(--color-text-muted)" }}>{item.quantity}</td>
-                  <td style={{ textAlign: "right", fontFamily: "'IBM Plex Mono', monospace", color: "var(--color-text-muted)" }}>€{item.avg_cost.toFixed(2)}</td>
-                  <td style={{ textAlign: "right", fontFamily: "'IBM Plex Mono', monospace" }}>€{item.current_price.toFixed(2)}</td>
-                  <td style={{ textAlign: "right", fontFamily: "'IBM Plex Mono', monospace", fontWeight: 500 }}>€{item.value.toFixed(2)}</td>
-                  <td style={{ textAlign: "right", fontFamily: "'IBM Plex Mono', monospace", color: item.pnl_pct >= 0 ? "var(--color-success)" : "var(--color-danger)" }}>
+                  <td style={{ fontFamily: "'VT323', monospace", fontWeight: 600 }}>{item.ticker}</td>
+                  <td style={{ textAlign: "right", fontFamily: "'VT323', monospace", color: "var(--color-text-muted)" }}>{item.quantity}</td>
+                  <td style={{ textAlign: "right", fontFamily: "'VT323', monospace", color: "var(--color-text-muted)" }}>€{item.avg_cost.toFixed(2)}</td>
+                  <td style={{ textAlign: "right", fontFamily: "'VT323', monospace" }}>€{item.current_price.toFixed(2)}</td>
+                  <td style={{ textAlign: "right", fontFamily: "'VT323', monospace", fontWeight: 500 }}>€{item.value.toFixed(2)}</td>
+                  <td style={{ textAlign: "right", fontFamily: "'VT323', monospace", color: item.pnl_pct >= 0 ? "var(--color-success)" : "var(--color-danger)" }}>
                     {item.pnl_pct >= 0 ? "+" : ""}{item.pnl_pct}%
                   </td>
                 </tr>
@@ -90,7 +90,7 @@ export default function CarteraPage() {
             </tbody>
           </table>
         ) : (
-          <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>No positions</p>
+          <p style={{ fontFamily: "'VT323', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>No positions</p>
         )}
       </div>
     </div>
@@ -100,10 +100,10 @@ export default function CarteraPage() {
 function SummaryBlock({ label, value, positive }: { label: string; value: string; positive?: boolean }) {
   return (
     <div className="card">
-      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-3)" }}>
+      <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-3)" }}>
         {label}
       </div>
-      <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: "1.5rem", fontWeight: 700, color: positive != null ? (positive ? "var(--color-success)" : "var(--color-danger)") : "var(--color-text-primary)", lineHeight: 1.1 }}>
+      <div style={{ fontFamily: "'VT323', monospace", fontSize: "1.5rem", fontWeight: 700, color: positive != null ? (positive ? "var(--color-success)" : "var(--color-danger)") : "var(--color-text-primary)", lineHeight: 1.1 }}>
         {value}
       </div>
     </div>
@@ -113,10 +113,10 @@ function SummaryBlock({ label, value, positive }: { label: string; value: string
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.7rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-1)" }}>
+      <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.7rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-text-muted)", marginBottom: "var(--s-1)" }}>
         {label}
       </div>
-      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "1rem", color: "var(--color-text-primary)" }}>
+      <div style={{ fontFamily: "'VT323', monospace", fontSize: "1rem", color: "var(--color-text-primary)" }}>
         {value}
       </div>
     </div>
@@ -126,7 +126,7 @@ function Stat({ label, value }: { label: string; value: string }) {
 function Loading() {
   return (
     <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
-      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>loading portfolio...</span>
+      <span style={{ fontFamily: "'VT323', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>loading portfolio...</span>
     </div>
   );
 }

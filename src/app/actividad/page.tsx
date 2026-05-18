@@ -38,10 +38,10 @@ export default function ActividadPage() {
     <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)" }}>
       <div className="fade-in" style={{ marginBottom: "var(--s-12)" }}>
         <div className="step-label" style={{ marginBottom: "var(--s-3)" }}>System</div>
-        <h1 style={{ fontFamily: "'Courier Prime', monospace", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "-0.02em", lineHeight: 1.1, margin: 0 }}>
+        <h1 style={{ fontFamily: "'VT323', monospace", fontSize: "clamp(1.5rem, 3vw, 2rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "-0.02em", lineHeight: 1.1, margin: 0 }}>
           Agent Activity
         </h1>
-        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)" }}>
+        <p style={{ fontFamily: "'VT323', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)" }}>
           Gateway logs and agent status.
         </p>
       </div>
@@ -54,11 +54,11 @@ export default function ActividadPage() {
             <div key={agent.name} className="card">
               <div style={{ display: "flex", alignItems: "center", gap: "var(--s-3)", marginBottom: "var(--s-3)" }}>
                 <span className={`status-dot ${agent.status === "online" ? "status-dot--online" : "status-dot--idle"}`}></span>
-                <span style={{ fontFamily: "'Courier Prime', monospace", fontSize: "0.9rem", fontWeight: 600, color: "var(--color-text-primary)" }}>
+                <span style={{ fontFamily: "'VT323', monospace", fontSize: "0.9rem", fontWeight: 600, color: "var(--color-text-primary)" }}>
                   {meta.label}
                 </span>
               </div>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-muted)", lineHeight: 1.6 }}>
+              <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.75rem", color: "var(--color-text-muted)", lineHeight: 1.6 }}>
                 <div>last: {agent.lastRun}</div>
                 <div>next: {agent.nextRun}</div>
               </div>
@@ -100,7 +100,7 @@ export default function ActividadPage() {
 function Loading() {
   return (
     <div style={{ maxWidth: "960px", margin: "0 auto", padding: "var(--s-12) var(--s-6)", display: "flex", alignItems: "center", justifyContent: "center", minHeight: "60vh" }}>
-      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>loading activity...</span>
+      <span style={{ fontFamily: "'VT323', monospace", fontSize: "0.875rem", color: "var(--color-text-muted)" }}>loading activity...</span>
     </div>
   );
 }

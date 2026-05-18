@@ -41,13 +41,13 @@ export default function CronsPage() {
   return (
     <div className="page-container" style={{ maxWidth: "960px", margin: "0 auto" }}>
       <div className="fade-in" style={{ marginBottom: "var(--s-6)" }}>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-1)" }}>
+        <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-1)" }}>
           System
         </div>
-        <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: "1.4rem", fontWeight: 700, color: "var(--color-text-primary)" }}>
+        <div style={{ fontFamily: "'VT323', monospace", fontSize: "1.4rem", fontWeight: 700, color: "var(--color-text-primary)" }}>
           Crons
         </div>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "var(--s-1)" }}>
+        <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "var(--s-1)" }}>
           {data?.cron_jobs?.length ?? "..."} scheduled jobs
         </div>
       </div>
@@ -61,12 +61,12 @@ export default function CronsPage() {
                 background: statusColor(job.status),
                 boxShadow: job.status === "active" ? `0 0 6px ${statusColor(job.status)}` : "none"
               }} />
-              <span style={{ fontFamily: "'Courier Prime', monospace", fontSize: "0.9rem", fontWeight: 700, color: "var(--color-text-primary)" }}>
+              <span style={{ fontFamily: "'VT323', monospace", fontSize: "0.9rem", fontWeight: 700, color: "var(--color-text-primary)" }}>
                 {job.name || job.id}
               </span>
             </div>
             <span style={{
-              fontFamily: "'IBM Plex Mono', monospace",
+              fontFamily: "'VT323', monospace",
               fontSize: "0.6rem",
               letterSpacing: "0.1em",
               textTransform: "uppercase",
@@ -83,40 +83,40 @@ export default function CronsPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "var(--s-2)" }}>
             {job.schedule && (
               <div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
+                <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.55rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
                   Schedule
                 </div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)" }}>
+                <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)" }}>
                   {formatSchedule(job.schedule)}
                 </div>
               </div>
             )}
             {job.next_run && (
               <div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
+                <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.55rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
                   Next Run
                 </div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)" }}>
+                <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)" }}>
                   {new Date(job.next_run).toLocaleString()}
                 </div>
               </div>
             )}
             {job.last_run && (
               <div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
+                <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.55rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
                   Last Run
                 </div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)" }}>
+                <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)" }}>
                   {new Date(job.last_run).toLocaleString()}
                 </div>
               </div>
             )}
             {job.deliver && (
               <div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
+                <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.55rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
                   Deliver
                 </div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)" }}>
+                <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)" }}>
                   {job.deliver}
                 </div>
               </div>
@@ -127,7 +127,7 @@ export default function CronsPage() {
 
       {data && (!data.cron_jobs || data.cron_jobs.length === 0) && (
         <div className="card" style={{ padding: "var(--s-4)" }}>
-          <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-muted)", margin: 0 }}>
+          <p style={{ fontFamily: "'VT323', monospace", fontSize: "0.8rem", color: "var(--color-text-muted)", margin: 0 }}>
             No cron jobs found
           </p>
         </div>
@@ -135,7 +135,7 @@ export default function CronsPage() {
 
       {!data && (
         <div className="card" style={{ padding: "var(--s-4)" }}>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-muted)" }}>
+          <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.8rem", color: "var(--color-text-muted)" }}>
             loading...
           </div>
         </div>

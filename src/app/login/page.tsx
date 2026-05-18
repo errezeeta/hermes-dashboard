@@ -33,15 +33,15 @@ export default function LoginPage() {
     <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: "var(--s-8)" }}>
       <div className="card" style={{ width: "min(420px, 90vw)", position: "relative" }}>
         <div className="badge badge--amber" style={{ marginBottom: "var(--s-4)" }}>Access Node</div>
-        <h1 className="glitch" data-text="Hermes Access" style={{ fontFamily: "'Courier Prime', monospace", fontSize: "1.6rem", margin: 0 }}>
+        <h1 className="glitch" data-text="Hermes Access" style={{ fontFamily: "'VT323', monospace", fontSize: "1.6rem", margin: 0 }}>
           Hermes Access
         </h1>
-        <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.85rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)" }}>
+        <p style={{ fontFamily: "'VT323', monospace", fontSize: "0.85rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)" }}>
           Authenticate to enter the console.
         </p>
 
         <form onSubmit={handleSubmit} style={{ marginTop: "var(--s-6)", display: "flex", flexDirection: "column", gap: "var(--s-3)" }}>
-          <label style={{ display: "flex", flexDirection: "column", gap: "var(--s-2)", fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-text-muted)" }}>
+          <label style={{ display: "flex", flexDirection: "column", gap: "var(--s-2)", fontFamily: "'VT323', monospace", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-text-muted)" }}>
             User
             <input
               value={user}
@@ -53,12 +53,12 @@ export default function LoginPage() {
                 border: "1px solid var(--color-border)",
                 borderRadius: "var(--r-sm)",
                 color: "var(--color-text-primary)",
-                fontFamily: "'IBM Plex Mono', monospace",
+                fontFamily: "'VT323', monospace",
               }}
             />
           </label>
 
-          <label style={{ display: "flex", flexDirection: "column", gap: "var(--s-2)", fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-text-muted)" }}>
+          <label style={{ display: "flex", flexDirection: "column", gap: "var(--s-2)", fontFamily: "'VT323', monospace", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-text-muted)" }}>
             Pass
             <input
               type="password"
@@ -71,13 +71,13 @@ export default function LoginPage() {
                 border: "1px solid var(--color-border)",
                 borderRadius: "var(--r-sm)",
                 color: "var(--color-text-primary)",
-                fontFamily: "'IBM Plex Mono', monospace",
+                fontFamily: "'VT323', monospace",
               }}
             />
           </label>
 
           {error && (
-            <div style={{ color: "var(--color-danger)", fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem" }}>
+            <div style={{ color: "var(--color-danger)", fontFamily: "'VT323', monospace", fontSize: "0.8rem" }}>
               {error}
             </div>
           )}

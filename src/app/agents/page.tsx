@@ -34,13 +34,13 @@ export default function AgentsPage() {
   return (
     <div className="page-container" style={{ maxWidth: "960px", margin: "0 auto" }}>
       <div className="fade-in" style={{ marginBottom: "var(--s-6)" }}>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-1)" }}>
+        <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-1)" }}>
           System
         </div>
-        <div style={{ fontFamily: "'Courier Prime', monospace", fontSize: "1.4rem", fontWeight: 700, color: "var(--color-text-primary)" }}>
+        <div style={{ fontFamily: "'VT323', monospace", fontSize: "1.4rem", fontWeight: 700, color: "var(--color-text-primary)" }}>
           Agents
         </div>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "var(--s-1)" }}>
+        <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "var(--s-1)" }}>
           {data?.agents?.length ?? "..."} active
         </div>
       </div>
@@ -52,7 +52,7 @@ export default function AgentsPage() {
             <div style={{ display: "flex", alignItems: "center", gap: "var(--s-2)", marginBottom: "var(--s-3)" }}>
               <span style={{ fontSize: "1.2rem" }}>{agent.emoji}</span>
               <div>
-                <div style={{ fontFamily: "'Courier Prime', monospace", fontWeight: 700, fontSize: "0.9rem", color: "var(--color-text-primary)" }}>
+                <div style={{ fontFamily: "'VT323', monospace", fontWeight: 700, fontSize: "0.9rem", color: "var(--color-text-primary)" }}>
                   {agent.name}
                 </div>
               </div>
@@ -65,18 +65,18 @@ export default function AgentsPage() {
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--s-2)" }}>
               <div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
+                <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.55rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
                   Status
                 </div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: agent.status === "online" ? "var(--color-success)" : "var(--color-text-muted)" }}>
+                <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.75rem", color: agent.status === "online" ? "var(--color-success)" : "var(--color-text-muted)" }}>
                   {agent.status}
                 </div>
               </div>
               <div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.55rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
+                <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.55rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
                   Last Run
                 </div>
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)" }}>
+                <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)" }}>
                   {agent.lastRun}
                 </div>
               </div>
@@ -87,7 +87,7 @@ export default function AgentsPage() {
 
       {/* Activity Log */}
       <div className="card fade-in" style={{ padding: "var(--s-4)" }}>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-3)" }}>
+        <div style={{ fontFamily: "'VT323', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-3)" }}>
           Activity Log
         </div>
         {data?.logs && data.logs.length > 0 ? (
@@ -97,7 +97,7 @@ export default function AgentsPage() {
                 display: "flex",
                 gap: "var(--s-2)",
                 padding: "4px 8px",
-                fontFamily: "'IBM Plex Mono', monospace",
+                fontFamily: "'VT323', monospace",
                 fontSize: "0.65rem",
                 background: log.type === "warning" ? "rgba(211,155,42,0.05)" : "transparent",
                 borderLeft: log.type === "warning" ? "2px solid var(--color-warning)" : "2px solid transparent",
@@ -116,7 +116,7 @@ export default function AgentsPage() {
             ))}
           </div>
         ) : (
-          <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-muted)", margin: 0 }}>
+          <p style={{ fontFamily: "'VT323', monospace", fontSize: "0.8rem", color: "var(--color-text-muted)", margin: 0 }}>
             No recent activity
           </p>
         )}
