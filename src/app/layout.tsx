@@ -17,11 +17,13 @@ const navItems = [
   { href: "/actividad", label: "Actividad" },
   { href: "/agents", label: "Agents" },
   { href: "/crons", label: "Crons" },
+  { href: "/sessions", label: "Sessions" },
 ];
 
 const sysItems = [
   { href: "/agents", label: "Agents" },
   { href: "/crons", label: "Crons" },
+  { href: "/sessions", label: "Sessions" },
 ];
 
 export default function RootLayout({
