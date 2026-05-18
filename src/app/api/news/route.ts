@@ -11,7 +11,11 @@ export async function GET() {
       });
       const data = await res.json();
       if (data?.result) {
-        return NextResponse.json(JSON.parse(data.result));
+        const parsed = JSON.parse(data.result);
+        if (parsed?.value) {
+          return NextResponse.json(JSON.parse(parsed.value));
+        }
+        return NextResponse.json(parsed);
       }
     }
 

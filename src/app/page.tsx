@@ -82,14 +82,9 @@ export default function Home() {
         <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-3)" }}>
           System Status
         </div>
-        <pre className="glitch" data-text="Marlonbot 0.1" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "clamp(1.6rem, 4vw, 2.6rem)", fontWeight: 700, color: "var(--color-text-primary)", letterSpacing: "0.02em", lineHeight: 1.1, margin: 0, whiteSpace: "pre" }}>
-{String.raw`__  __           _             _           _     
-|  \/  | ___  ___| | ___  _ __(_) ___  ___| |_   
-| |\/| |/ _ \/ __| |/ _ \| '__| |/ _ \/ __| __|  
-| |  | |  __/ (__| | (_) | |  | |  __/\__ \ |_   
-|_|  |_|\___|\___|_|\___/|_|  |_|\___||___/\__|  
-              v0.1`}
-        </pre>
+        <div className="glitch" data-text="MARLONBOT 0.1" style={{ fontFamily: "'Press Start 2P', monospace", fontSize: "clamp(1rem, 2vw, 1.4rem)", color: "var(--color-text-primary)", letterSpacing: "0.08em", lineHeight: 1.3, margin: 0, textTransform: "uppercase" }}>
+          Marlonbot 0.1
+        </div>
         <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.9rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)", lineHeight: 1.6 }}>
           Multi-agent ecosystem control panel. Local-first. Noisy by design.
         </p>
