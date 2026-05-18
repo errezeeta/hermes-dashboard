@@ -160,17 +160,8 @@ body {
   content: '';
   position: fixed;
   inset: 0;
-  background:
-    repeating-linear-gradient(
-      0deg,
-      transparent 0px,
-      transparent 2px,
-      rgba(51,255,51,0.03) 2px,
-      rgba(51,255,51,0.03) 4px
-    );
   pointer-events: none;
   z-index: 1;
-  opacity: 0.5;
 }
 
 .theme-light .hermes-shell {

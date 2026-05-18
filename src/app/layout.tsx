@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./david.css";
 import ThemeControls from "./ThemeControls";
+import DavidBackground from "./DavidBackground";
 
 export const metadata: Metadata = {
   title: "Marlonbot 0.1",
@@ -92,6 +94,7 @@ export default function RootLayout({
           <main style={{ flex: 1, overflowY: "auto", position: "relative", zIndex: 2 }}>
             {children}
           </main>
+          <DavidBackground />
         </div>
       </body>
     </html>
