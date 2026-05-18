@@ -502,9 +502,33 @@ body {
   transition: all var(--t-base);
 }
 
+.btn-amber::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(14,165,233,0.04) 1px,
+    rgba(14,165,233,0.04) 2px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+.btn-amber::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(14,165,233,0.03), transparent 20%, transparent 80%, rgba(14,165,233,0.03));
+  pointer-events: none;
+  z-index: 1;
+}
+
 .btn-amber:hover {
-  background: rgba(34,197,94,0.08);
-  box-shadow: 0 0 16px rgba(34,197,94,0.12), inset 0 0 16px rgba(34,197,94,0.04);
+  background: rgba(14,165,233,0.1);
+  box-shadow: 0 0 20px rgba(14,165,233,0.15), inset 0 0 20px rgba(14,165,233,0.05);
   color: var(--color-gold);
   border-color: var(--color-gold);
 }
