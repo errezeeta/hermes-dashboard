@@ -33,7 +33,7 @@ export default function RootLayout({
         <div className="hermes-shell" style={{ display: "flex", minHeight: "100vh" }}>
           {/* Mobile top bar */}
           <header className="mobile-bar">
-            <a href="/" className="mobile-brand">MARLONBOT</a>
+            <a href="/" className="mobile-brand">Marlonbot</a>
             <nav className="mobile-nav">
               {navItems.map((item) => (
                 <a key={item.href} href={item.href} className="mobile-nav-link">
@@ -47,7 +47,7 @@ export default function RootLayout({
           <aside className="sidebar" style={{ width: "240px" }}>
             {/* Logo */}
             <div className="sidebar-logo">
-              <a href="/" className="sidebar-brand">MARLONBOT</a>
+              <a href="/" className="sidebar-brand">Marlonbot</a>
               <div className="sidebar-sub">
                 Dashboard <span style={{ color: "var(--color-amber)" }}>v0.1</span>
               </div>
