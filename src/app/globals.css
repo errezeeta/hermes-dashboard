@@ -102,17 +102,17 @@ body {
 }
 
 .theme-amber {
-  --color-amber: #D39B2A;
-  --color-gold: #F2C35B;
-  --color-cyan: #5BE3D8;
-  --color-warm: #9B723A;
+  --color-amber: #22c55e;
+  --color-gold: #86efac;
+  --color-cyan: #0ea5e9;
+  --color-warm: #16a34a;
 }
 
 .theme-cyan {
-  --color-amber: #7AD5FF;
-  --color-gold: #B3E7FF;
-  --color-cyan: #5BE3D8;
-  --color-warm: #5A88A5;
+  --color-amber: #0ea5e9;
+  --color-gold: #7dd3fc;
+  --color-cyan: #22c55e;
+  --color-warm: #0284c7;
 }
 
 /* ── HERMES GLITCH SHELL ────── */
@@ -124,8 +124,8 @@ body {
   position: relative;
   z-index: 0;
   background:
-    radial-gradient(ellipse 70% 50% at 10% 10%, rgba(211,155,42,0.08), transparent 60%),
-    radial-gradient(ellipse 50% 50% at 90% 85%, rgba(91,227,216,0.04), transparent 55%),
+    radial-gradient(ellipse 70% 50% at 10% 10%, rgba(34,197,94,0.08), transparent 60%),
+    radial-gradient(ellipse 50% 50% at 90% 85%, rgba(14,165,233,0.04), transparent 55%),
     radial-gradient(ellipse 40% 40% at 80% 15%, rgba(169,58,42,0.06), transparent 45%),
     linear-gradient(180deg, #060608 0%, #0A0A0C 100%);
 }
@@ -503,8 +503,8 @@ body {
 }
 
 .btn-amber:hover {
-  background: rgba(211,155,42,0.08);
-  box-shadow: 0 0 16px rgba(211,155,42,0.12), inset 0 0 16px rgba(211,155,42,0.04);
+  background: rgba(34,197,94,0.08);
+  box-shadow: 0 0 16px rgba(34,197,94,0.12), inset 0 0 16px rgba(34,197,94,0.04);
   color: var(--color-gold);
   border-color: var(--color-gold);
 }

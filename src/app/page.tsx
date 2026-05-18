@@ -65,22 +65,17 @@ export default function Home() {
   return (
     <div className="page-container" style={{ maxWidth: "960px", margin: "0 auto" }}>
       {/* Header */}
-      <div className="fade-in" style={{ marginBottom: "var(--s-6)" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "var(--s-4)", flexWrap: "wrap" }}>
-          <div>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-1)" }}>
-              System Status
-            </div>
-            <div className="glitch" data-text="MARLONBOT 0.1" style={{ fontFamily: "'Jacquard 12', monospace", fontSize: "clamp(2.2rem, 5vw, 3.2rem)", color: "var(--color-text-primary)", letterSpacing: "0.04em", lineHeight: 1.15, margin: 0 }}>
-              Marlonbot 0.1
-            </div>
-            <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-muted)", marginTop: "var(--s-1)", lineHeight: 1.5 }}>
-              Multi-agent ecosystem control panel. Local-first. Noisy by design.
-            </p>
-            <div style={{ display: "flex", gap: "var(--s-3)", marginTop: "var(--s-3)", flexWrap: "wrap", alignItems: "center" }}>
-              <a className="btn-amber" href="/cartera">Open Console</a>
-              <a className="btn-amber" href="/actividad" style={{ borderColor: "var(--color-cyan)", color: "var(--color-cyan)" }}>Live Signal</a>
-            </div>
+      <div className="fade-in" style={{ marginTop: "var(--s-4)", marginBottom: "var(--s-6)" }}>
+        <div>
+          <div className="glitch" data-text="Marlonbot 0.1" style={{ fontFamily: "'Jacquard 12', monospace", fontSize: "clamp(2.2rem, 5vw, 3.2rem)", color: "var(--color-text-primary)", letterSpacing: "0.04em", lineHeight: 1.15, margin: 0 }}>
+            Marlonbot 0.1
+          </div>
+          <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-muted)", marginTop: "var(--s-1)", lineHeight: 1.5 }}>
+            Multi-agent ecosystem control panel. Local-first. Noisy by design.
+          </p>
+          <div style={{ display: "flex", gap: "var(--s-3)", marginTop: "var(--s-3)", flexWrap: "wrap", alignItems: "center" }}>
+            <a className="btn-amber" href="/cartera">Open Console</a>
+            <a className="btn-amber" href="/actividad" style={{ borderColor: "var(--color-cyan)", color: "var(--color-cyan)" }}>Live Signal</a>
           </div>
         </div>
       </div>
