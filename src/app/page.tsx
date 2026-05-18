@@ -65,13 +65,13 @@ export default function Home() {
   return (
     <div className="page-container" style={{ maxWidth: "960px", margin: "0 auto" }}>
       {/* Header */}
-      <div className="fade-in" style={{ marginBottom: "var(--s-8)" }}>
+      <div className="fade-in" style={{ marginBottom: "var(--s-6)" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "var(--s-4)", flexWrap: "wrap" }}>
           <div>
             <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-amber)", marginBottom: "var(--s-1)" }}>
               System Status
             </div>
-            <div className="glitch" data-text="MARLONBOT 0.1" style={{ fontFamily: "'Jacquard 12', monospace", fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", color: "var(--color-text-primary)", letterSpacing: "0.04em", lineHeight: 1.2, margin: 0 }}>
+            <div className="glitch" data-text="MARLONBOT 0.1" style={{ fontFamily: "'Jacquard 12', monospace", fontSize: "clamp(2.2rem, 5vw, 3.2rem)", color: "var(--color-text-primary)", letterSpacing: "0.04em", lineHeight: 1.15, margin: 0 }}>
               Marlonbot 0.1
             </div>
             <p style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.8rem", color: "var(--color-text-muted)", marginTop: "var(--s-1)", lineHeight: 1.5 }}>
@@ -80,27 +80,6 @@ export default function Home() {
             <div style={{ display: "flex", gap: "var(--s-3)", marginTop: "var(--s-3)", flexWrap: "wrap", alignItems: "center" }}>
               <a className="btn-amber" href="/cartera">Open Console</a>
               <a className="btn-amber" href="/actividad" style={{ borderColor: "var(--color-cyan)", color: "var(--color-cyan)" }}>Live Signal</a>
-            </div>
-          </div>
-
-          <div className="header-cards" style={{ display: "flex", flexDirection: "column", gap: "var(--s-3)", minWidth: "200px" }}>
-            <div className="card" style={{ padding: "var(--s-3)" }}>
-              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
-                Automations
-              </div>
-              {system?.cron_lines && system.cron_lines.length > 0 ? (
-                <div style={{ marginTop: "var(--s-1)", display: "grid", gap: "3px" }}>
-                  {system.cron_lines.slice(0, 6).map((line, idx) => (
-                    <div key={idx} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", color: "var(--color-text-primary)", borderBottom: "1px dashed var(--color-border)", paddingBottom: "2px" }}>
-                      {line}
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)", marginTop: "var(--s-1)" }}>
-                  loading
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -112,6 +91,28 @@ export default function Home() {
         <MetricCard label="PASOS HOY" value={health?.steps?.today?.toLocaleString() ?? "—"} sub={`media 7d: ${Math.round(health?.steps?.avg7d ?? 0).toLocaleString()}`} delay={80} />
         <MetricCard label="NOTICIAS" value={news?.total?.toString() ?? "0"} sub="artículos" delay={160} />
         <MetricCard label="BTC PRICE" value={portfolio?.btc?.price ? `€${portfolio.btc.price.toLocaleString()}` : "—"} sub={portfolio?.btc?.quantity ? `${portfolio.btc.quantity} BTC` : undefined} delay={240} />
+      </div>
+
+      {/* Automations */}
+      <div className="fade-in" style={{ marginBottom: "var(--s-4)" }}>
+        <div className="card" style={{ padding: "var(--s-3)" }}>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.6rem", letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--color-text-muted)" }}>
+            Automations
+          </div>
+          {system?.cron_lines && system.cron_lines.length > 0 ? (
+            <div style={{ marginTop: "var(--s-1)", display: "flex", gap: "var(--s-3)", flexWrap: "wrap" }}>
+              {system.cron_lines.slice(0, 6).map((line, idx) => (
+                <div key={idx} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.65rem", color: "var(--color-text-primary)", padding: "3px 8px", background: "var(--color-code-bg)", border: "1px solid var(--color-border)", borderRadius: "var(--r-sm)" }}>
+                  {line}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.75rem", color: "var(--color-text-primary)", marginTop: "var(--s-1)" }}>
+              loading
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Portfolio + Health */}

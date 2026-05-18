@@ -221,15 +221,15 @@ body {
 }
 
 .sidebar-brand {
-  font-family: 'Courier Prime', monospace;
-  font-size: 1rem;
-  font-weight: 700;
+  font-family: 'Jacquard 12', monospace;
+  font-size: 1.3rem;
   color: var(--color-text-primary);
   text-decoration: none;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.02em;
   display: inline-flex;
   align-items: center;
   gap: var(--s-2);
+  position: relative;
 }
 
 .sidebar-brand::before {
@@ -513,16 +513,15 @@ body {
 /* ── ANIMATIONS ──────────────── */
 .fade-in {
   opacity: 0;
-  animation: glitchIn 0.8s ease forwards;
-  filter: drop-shadow(0 0 8px rgba(211,155,42,0.05));
+  animation: glitchIn 0.7s ease-out forwards;
+  will-change: opacity, clip-path;
 }
 
 @keyframes glitchIn {
   0% { opacity: 0; clip-path: inset(0 0 100% 0); }
-  20% { opacity: 1; clip-path: inset(0 0 0 0); }
-  21% { clip-path: inset(40% 0 50% 0); }
-  25% { clip-path: inset(20% 0 60% 0); }
-  30% { clip-path: inset(0 0 0 0); }
+  15% { opacity: 1; clip-path: inset(0 0 0 0); }
+  18% { clip-path: inset(30% 0 50% 0); }
+  22% { clip-path: inset(0 0 0 0); }
   100% { opacity: 1; clip-path: inset(0 0 0 0); }
 }
 
