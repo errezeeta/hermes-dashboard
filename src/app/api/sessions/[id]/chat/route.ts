@@ -46,20 +46,26 @@ export async function POST(
       const { spawn } = await import("child_process");
       fullContent = await new Promise<string>((resolve, reject) => {
         const proc = spawn("hermes", ["chat", "-q", message, "--resume", id, "--quiet", "-Q"], {
-          timeout: 60000,
+          timeout: 120000,
           env: { ...process.env, TERM: "dumb", PAGER: "cat" },
         });
         let out = "", err = "";
         proc.stdout.on("data", (d: Buffer) => { out += d.toString(); });
         proc.stderr.on("data", (d: Buffer) => { err += d.toString(); });
         proc.on("close", (code) => {
-          if (code === 0 && out.trim()) resolve(out.trim());
-          else reject(new Error(err || out || `exit ${code}`));
+          if (code === 0 && out.trim()) {
+            // Strip the "session_id: ..." line from the output
+            const lines = out.trim().split("\n");
+            const response = lines.filter(l => !l.startsWith("session_id:")).join("\n").trim();
+            if (response) resolve(response);
+            else reject(new Error("empty response"));
+          } else reject(new Error(err || out || `exit ${code}`));
         });
         proc.on("error", reject);
       });
-    } catch {
-      // Method 2: Try OpenCode API direct (works on Vercel with GITHUB_TOKEN)
+      if (fullContent) console.log("hermes CLI worked!");
+    } catch (e: any) {
+      console.log("hermes CLI failed:", e.message);
       const ghToken = await getGitHubToken();
       if (!ghToken) {
         return NextResponse.json({
