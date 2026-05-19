@@ -1,17 +1,13 @@
 import { NextResponse } from "next/server";
+import { kvGet } from "../../../../lib/kv";
 
-// Get GitHub token from env or local gh CLI
 async function getGitHubToken(): Promise<string> {
   const envToken = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
   if (envToken) return envToken;
-
-  // Try local gh CLI (works in dev/wsl)
   try {
     const { execSync } = await import("child_process");
-    const token = execSync("gh auth token", { timeout: 5000, encoding: "utf-8" }).trim();
-    if (token) return token;
+    return execSync("gh auth token", { timeout: 5000, encoding: "utf-8" }).trim();
   } catch {}
-
   return "";
 }
 
@@ -28,48 +24,35 @@ export async function POST(
   }
 
   try {
-    // Load session
-    const home = process.env.HOME || "/home/adminmac";
-    const { execSync } = await import("child_process");
-    const out = execSync(
-      `python3 ${home}/.hermes/scripts/dashboard-sessions.py ${id}`,
-      { timeout: 10000, encoding: "utf-8" }
-    );
-    const session = JSON.parse(out.trim());
+    // Load session from KV (works in Vercel) or local filesystem
+    let session: any = await kvGet(`session:${id}`);
+
+    if (!session) {
+      // Fallback to local filesystem
+      const home = process.env.HOME || "/home/adminmac";
+      const { execSync } = await import("child_process");
+      const out = execSync(
+        `cat "${home}/.hermes/sessions/session_${id}.json" 2>/dev/null`,
+        { timeout: 5000, encoding: "utf-8" }
+      );
+      if (out.trim()) {
+        session = JSON.parse(out.trim());
+      }
+    }
+
     if (!session) {
       return NextResponse.json({ error: "session not found" }, { status: 404 });
     }
 
-    // Use session's own endpoint by default
-    let apiBaseUrl = session.base_url || "https://api.openai.com/v1";
-    let model = session.model || "gpt-4o";
+    // OpenCode endpoint + model
+    const apiBaseUrl = "https://opencode.ai/zen/go/v1";
+    const model = "gpt-5.2-codex";
 
-    // If using opencode, force their endpoint and pick an available model
-    if (apiBaseUrl.includes("opencode")) {
-      apiBaseUrl = "https://opencode.ai/zen/go/v1";
-      model = "gpt-5.2-codex";
-    }
-
-    // Get auth token: GitHub token (for OpenCode) or OpenAI key
+    // Get GitHub token for auth
     const ghToken = await getGitHubToken();
-    const openaiKey = process.env.OPENAI_API_KEY || "";
-
-    let apiKey = "";
-
-    // Determine which auth to use
-    if (apiBaseUrl.includes("opencode")) {
-      apiKey = ghToken;
-      if (!apiKey) {
-        apiKey = process.env.OPENCODE_KEY || openaiKey;
-        if (apiKey) apiBaseUrl = "https://api.openai.com/v1";
-      }
-    } else {
-      apiKey = openaiKey;
-    }
-
-    if (!apiKey) {
+    if (!ghToken) {
       return NextResponse.json({
-        error: "No API key available. In Vercel: set GITHUB_TOKEN (GitHub PAT) or OPENAI_API_KEY. Locally: gh auth login."
+        error: "No GITHUB_TOKEN set in env. Run 'gh auth login' or set GITHUB_TOKEN in Vercel."
       }, { status: 500 });
     }
 
@@ -83,12 +66,12 @@ export async function POST(
       { role: "user", content: message },
     ];
 
-    // Call API
+    // Call OpenCode API
     const res = await fetch(`${apiBaseUrl}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${apiKey}`,
+        "Authorization": `Bearer ${ghToken}`,
       },
       body: JSON.stringify({
         model,
@@ -105,7 +88,6 @@ export async function POST(
       }, { status: 500 });
     }
 
-    // Stream response
     const reader = res.body?.getReader();
     if (!reader) {
       return NextResponse.json({ error: "no stream" }, { status: 500 });
@@ -117,6 +99,7 @@ export async function POST(
     const stream = new ReadableStream({
       async start(controller) {
         try {
+          let fullContent = "";
           while (true) {
             const { done, value } = await reader.read();
             if (done) break;
@@ -127,9 +110,29 @@ export async function POST(
                 const json = JSON.parse(line.slice(6));
                 const content = json.choices?.[0]?.delta?.content || "";
                 if (content) {
+                  fullContent += content;
                   controller.enqueue(encoder.encode(JSON.stringify({ content }) + "\n"));
                 }
               } catch {}
+            }
+          }
+          // Save messages back to KV
+          if (fullContent) {
+            session.messages = session.messages || [];
+            session.messages.push({ role: "user", content: message });
+            session.messages.push({ role: "assistant", content: fullContent });
+            session.last_updated = new Date().toISOString();
+            const kvUrl = process.env.KV_REST_API_URL;
+            const kvToken = process.env.KV_REST_API_TOKEN;
+            if (kvUrl && kvToken) {
+              await fetch(`${kvUrl}/set/session:${id}`, {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${kvToken}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ value: JSON.stringify(session) }),
+              });
             }
           }
         } catch (err) {
