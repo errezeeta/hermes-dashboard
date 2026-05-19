@@ -1,6 +1,15 @@
 import { NextResponse } from "next/server";
 import { kvGet, kvSet } from "../../../../lib/kv";
-import { execSync } from "child_process";
+
+async function getGitHubToken(): Promise<string> {
+  const t = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
+  if (t) return t;
+  try {
+    const { execSync } = await import("child_process");
+    return execSync("gh auth token", { timeout: 5000, encoding: "utf-8" }).trim();
+  } catch {}
+  return "";
+}
 
 export async function POST(
   _request: Request,
@@ -15,67 +24,71 @@ export async function POST(
   }
 
   try {
-    // Load session from KV (Vercel) or local filesystem
+    // Load session
     let session: any = await kvGet(`session:${id}`);
-    let sessionLoaded = false;
-
     if (!session) {
       const home = process.env.HOME || "/home/adminmac";
+      const { execSync } = await import("child_process");
       const out = execSync(
         `cat "${home}/.hermes/sessions/session_${id}.json" 2>/dev/null`,
         { timeout: 5000, encoding: "utf-8" }
       );
-      if (out.trim()) {
-        session = JSON.parse(out.trim());
-        sessionLoaded = true;
-      }
-    } else {
-      sessionLoaded = true;
+      if (out.trim()) session = JSON.parse(out.trim());
     }
-
     if (!session) {
       return NextResponse.json({ error: "session not found" }, { status: 404 });
     }
 
-    // Use Hermes CLI to continue the session - this handles auth automatically
-    const { spawn } = await import("child_process");
+    let fullContent = "";
 
-    const response = await new Promise<string>((resolve, reject) => {
-      const proc = spawn("hermes", [
-        "chat",
-        "-q", message,
-        "--resume", id,
-        "--quiet",
-        "-Q",
-      ], {
-        timeout: 60000,
-        env: { ...process.env, TERM: "dumb", PAGER: "cat" },
+    // Method 1: Try hermes CLI (works locally)
+    try {
+      const { spawn } = await import("child_process");
+      fullContent = await new Promise<string>((resolve, reject) => {
+        const proc = spawn("hermes", ["chat", "-q", message, "--resume", id, "--quiet", "-Q"], {
+          timeout: 60000,
+          env: { ...process.env, TERM: "dumb", PAGER: "cat" },
+        });
+        let out = "", err = "";
+        proc.stdout.on("data", (d: Buffer) => { out += d.toString(); });
+        proc.stderr.on("data", (d: Buffer) => { err += d.toString(); });
+        proc.on("close", (code) => {
+          if (code === 0 && out.trim()) resolve(out.trim());
+          else reject(new Error(err || out || `exit ${code}`));
+        });
+        proc.on("error", reject);
+      });
+    } catch {
+      // Method 2: Try OpenCode API direct (works on Vercel with GITHUB_TOKEN)
+      const ghToken = await getGitHubToken();
+      if (!ghToken) {
+        return NextResponse.json({
+          error: "No se pudo conectar. Si estás en local: asegúrate de que 'hermes' funciona. Si estás en Vercel: configura GITHUB_TOKEN."
+        }, { status: 500 });
+      }
+
+      const messages = [
+        { role: "system", content: session.system_prompt || "Eres un asistente." },
+        ...(session.messages || []).map((m: any) => ({ role: m.role, content: m.content })),
+        { role: "user", content: message },
+      ];
+
+      const res = await fetch("https://opencode.ai/zen/go/v1/chat/completions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${ghToken}` },
+        body: JSON.stringify({ model: "gpt-5.2-codex", messages, max_tokens: 2048 }),
       });
 
-      let output = "";
-      let error = "";
+      if (!res.ok) {
+        const err = await res.text();
+        return NextResponse.json({ error: `OpenCode API error: ${err.slice(0, 200)}` }, { status: 500 });
+      }
 
-      proc.stdout.on("data", (data: Buffer) => {
-        output += data.toString();
-      });
+      const data = await res.json();
+      fullContent = data.choices?.[0]?.message?.content || "";
+    }
 
-      proc.stderr.on("data", (data: Buffer) => {
-        error += data.toString();
-      });
-
-      proc.on("close", (code: number) => {
-        if (code === 0 && output.trim()) {
-          resolve(output.trim());
-        } else {
-          reject(new Error(error || output || `exit code ${code}`));
-        }
-      });
-
-      proc.on("error", reject);
-    });
-
-    // Save messages back to KV
-    const fullContent = response;
+    // Save to session
     session.messages = session.messages || [];
     session.messages.push({ role: "user", content: message });
     session.messages.push({ role: "assistant", content: fullContent });
@@ -83,26 +96,17 @@ export async function POST(
 
     await kvSet(`session:${id}`, session);
 
-    // Also save locally
-    try {
-      const home = process.env.HOME || "/home/adminmac";
-      const path = `${home}/.hermes/sessions/session_${id}.json`;
-      const fs = await import("fs");
-      fs.writeFileSync(path, JSON.stringify(session, null, 2));
-    } catch {}
-
-    // Return as SSE stream (even though we have the full response, stream it for UI feel)
+    // Stream back
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       start(controller) {
-        // Simulate streaming by sending chunks
         const words = fullContent.split(/(?<=\s)/);
         let i = 0;
         const send = () => {
           if (i < words.length) {
             controller.enqueue(encoder.encode(JSON.stringify({ content: words[i] }) + "\n"));
             i++;
-            setTimeout(send, 15);
+            setTimeout(send, 12);
           } else {
             controller.close();
           }
@@ -112,10 +116,7 @@ export async function POST(
     });
 
     return new Response(stream, {
-      headers: {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-      },
+      headers: { "Content-Type": "text/event-stream", "Cache-Control": "no-cache" },
     });
   } catch (err: any) {
     return NextResponse.json({ error: String(err) }, { status: 500 });

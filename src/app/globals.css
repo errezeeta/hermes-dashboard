@@ -128,20 +128,6 @@ body {
   background:
     radial-gradient(ellipse 70% 50% at 15% 10%, rgba(51,255,51,0.06), transparent 55%),
     radial-gradient(ellipse 40% 40% at 85% 15%, rgba(255,51,102,0.03), transparent 50%),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 29px,
-      rgba(51,255,51,0.04) 29px,
-      rgba(51,255,51,0.04) 30px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 29px,
-      rgba(51,255,51,0.04) 29px,
-      rgba(51,255,51,0.04) 30px
-    ),
     linear-gradient(160deg, #060a06 0%, #080c08 30%, #060806 60%, #040604 100%);
 }
 
