@@ -30,23 +30,66 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: "var(--s-8)" }}>
-      <div className="card" style={{ width: "min(420px, 90vw)", position: "relative" }}>
-        <div className="badge badge--amber" style={{ marginBottom: "var(--s-4)" }}>Access Node</div>
-        <h1 className="glitch" data-text="Hermes Access" style={{ fontFamily: "'VT323', monospace", fontSize: "1.6rem", margin: 0 }}>
-          Hermes Access
-        </h1>
-        <p style={{ fontFamily: "'VT323', monospace", fontSize: "0.85rem", color: "var(--color-text-muted)", marginTop: "var(--s-2)" }}>
-          Authenticate to enter the console.
+    <div style={{
+      minHeight: "100vh",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "var(--s-8)",
+      padding: "var(--s-6)",
+    }}>
+      {/* Big glitch title */}
+      <div style={{ textAlign: "center" }}>
+        <div
+          className="glitch"
+          data-text="Marlonbot 0.1"
+          style={{
+            fontFamily: "'Jacquard 12', monospace",
+            fontSize: "clamp(2.5rem, 6vw, 4rem)",
+            color: "var(--color-text-primary)",
+            letterSpacing: "0.04em",
+            lineHeight: 1.15,
+          }}
+        >
+          Marlonbot 0.1
+        </div>
+        <p style={{
+          fontFamily: "'VT323', monospace",
+          fontSize: "0.9rem",
+          color: "var(--color-text-muted)",
+          marginTop: "var(--s-2)",
+        }}>
+          Multi-agent ecosystem control panel
         </p>
+      </div>
 
-        <form onSubmit={handleSubmit} style={{ marginTop: "var(--s-6)", display: "flex", flexDirection: "column", gap: "var(--s-3)" }}>
-          <label style={{ display: "flex", flexDirection: "column", gap: "var(--s-2)", fontFamily: "'VT323', monospace", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-text-muted)" }}>
+      {/* Login card */}
+      <div className="card" style={{ width: "min(380px, 90vw)", position: "relative", padding: "var(--s-6)" }}>
+        <div style={{
+          fontFamily: "'VT323', monospace",
+          fontSize: "0.6rem",
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          color: "var(--color-accent)",
+          marginBottom: "var(--s-4)",
+          textAlign: "center",
+        }}>
+          Authenticate
+        </div>
+
+        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "var(--s-3)" }}>
+          <label style={{
+            display: "flex", flexDirection: "column", gap: "var(--s-2)",
+            fontFamily: "'VT323', monospace", fontSize: "0.75rem",
+            textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-text-muted)",
+          }}>
             User
             <input
               value={user}
               onChange={(e) => setUser(e.target.value)}
               required
+              autoFocus
               style={{
                 padding: "10px 12px",
                 background: "var(--color-code-bg)",
@@ -54,11 +97,16 @@ export default function LoginPage() {
                 borderRadius: "var(--r-sm)",
                 color: "var(--color-text-primary)",
                 fontFamily: "'VT323', monospace",
+                fontSize: "0.9rem",
               }}
             />
           </label>
 
-          <label style={{ display: "flex", flexDirection: "column", gap: "var(--s-2)", fontFamily: "'VT323', monospace", fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-text-muted)" }}>
+          <label style={{
+            display: "flex", flexDirection: "column", gap: "var(--s-2)",
+            fontFamily: "'VT323', monospace", fontSize: "0.75rem",
+            textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--color-text-muted)",
+          }}>
             Pass
             <input
               type="password"
@@ -72,17 +120,18 @@ export default function LoginPage() {
                 borderRadius: "var(--r-sm)",
                 color: "var(--color-text-primary)",
                 fontFamily: "'VT323', monospace",
+                fontSize: "0.9rem",
               }}
             />
           </label>
 
           {error && (
-            <div style={{ color: "var(--color-danger)", fontFamily: "'VT323', monospace", fontSize: "0.8rem" }}>
+            <div style={{ color: "var(--color-danger)", fontFamily: "'VT323', monospace", fontSize: "0.8rem", textAlign: "center" }}>
               {error}
             </div>
           )}
 
-          <button className="btn-amber" type="submit" disabled={loading}>
+          <button className="btn-amber" type="submit" disabled={loading} style={{ marginTop: "var(--s-2)", justifyContent: "center" }}>
             {loading ? "Connecting..." : "Enter"}
           </button>
         </form>
