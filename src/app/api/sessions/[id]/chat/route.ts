@@ -1,15 +1,6 @@
 import { NextResponse } from "next/server";
-import { kvGet } from "../../../../lib/kv";
-
-async function getGitHubToken(): Promise<string> {
-  const envToken = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
-  if (envToken) return envToken;
-  try {
-    const { execSync } = await import("child_process");
-    return execSync("gh auth token", { timeout: 5000, encoding: "utf-8" }).trim();
-  } catch {}
-  return "";
-}
+import { kvGet, kvSet } from "../../../../lib/kv";
+import { execSync } from "child_process";
 
 export async function POST(
   _request: Request,
@@ -24,123 +15,99 @@ export async function POST(
   }
 
   try {
-    // Load session from KV (works in Vercel) or local filesystem
+    // Load session from KV (Vercel) or local filesystem
     let session: any = await kvGet(`session:${id}`);
+    let sessionLoaded = false;
 
     if (!session) {
-      // Fallback to local filesystem
       const home = process.env.HOME || "/home/adminmac";
-      const { execSync } = await import("child_process");
       const out = execSync(
         `cat "${home}/.hermes/sessions/session_${id}.json" 2>/dev/null`,
         { timeout: 5000, encoding: "utf-8" }
       );
       if (out.trim()) {
         session = JSON.parse(out.trim());
+        sessionLoaded = true;
       }
+    } else {
+      sessionLoaded = true;
     }
 
     if (!session) {
       return NextResponse.json({ error: "session not found" }, { status: 404 });
     }
 
-    // OpenCode endpoint + model
-    const apiBaseUrl = "https://opencode.ai/zen/go/v1";
-    const model = "gpt-5.2-codex";
+    // Use Hermes CLI to continue the session - this handles auth automatically
+    const { spawn } = await import("child_process");
 
-    // Get GitHub token for auth
-    const ghToken = await getGitHubToken();
-    if (!ghToken) {
-      return NextResponse.json({
-        error: "No GITHUB_TOKEN set in env. Run 'gh auth login' or set GITHUB_TOKEN in Vercel."
-      }, { status: 500 });
-    }
+    const response = await new Promise<string>((resolve, reject) => {
+      const proc = spawn("hermes", [
+        "chat",
+        "-q", message,
+        "--resume", id,
+        "--quiet",
+        "-Q",
+      ], {
+        timeout: 60000,
+        env: { ...process.env, TERM: "dumb", PAGER: "cat" },
+      });
 
-    // Build messages
-    const messages = [
-      { role: "system", content: session.system_prompt || "You are a helpful assistant." },
-      ...(session.messages || []).map((m: any) => ({
-        role: m.role,
-        content: m.content,
-      })),
-      { role: "user", content: message },
-    ];
+      let output = "";
+      let error = "";
 
-    // Call OpenCode API
-    const res = await fetch(`${apiBaseUrl}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${ghToken}`,
-      },
-      body: JSON.stringify({
-        model,
-        messages,
-        max_tokens: 2048,
-        stream: true,
-      }),
+      proc.stdout.on("data", (data: Buffer) => {
+        output += data.toString();
+      });
+
+      proc.stderr.on("data", (data: Buffer) => {
+        error += data.toString();
+      });
+
+      proc.on("close", (code: number) => {
+        if (code === 0 && output.trim()) {
+          resolve(output.trim());
+        } else {
+          reject(new Error(error || output || `exit code ${code}`));
+        }
+      });
+
+      proc.on("error", reject);
     });
 
-    if (!res.ok) {
-      const errText = await res.text();
-      return NextResponse.json({
-        error: `API error (${res.status}): ${errText.slice(0, 300)}`
-      }, { status: 500 });
-    }
+    // Save messages back to KV
+    const fullContent = response;
+    session.messages = session.messages || [];
+    session.messages.push({ role: "user", content: message });
+    session.messages.push({ role: "assistant", content: fullContent });
+    session.last_updated = new Date().toISOString();
 
-    const reader = res.body?.getReader();
-    if (!reader) {
-      return NextResponse.json({ error: "no stream" }, { status: 500 });
-    }
+    await kvSet(`session:${id}`, session);
 
+    // Also save locally
+    try {
+      const home = process.env.HOME || "/home/adminmac";
+      const path = `${home}/.hermes/sessions/session_${id}.json`;
+      const fs = await import("fs");
+      fs.writeFileSync(path, JSON.stringify(session, null, 2));
+    } catch {}
+
+    // Return as SSE stream (even though we have the full response, stream it for UI feel)
     const encoder = new TextEncoder();
-    const decoder = new TextDecoder();
-
     const stream = new ReadableStream({
-      async start(controller) {
-        try {
-          let fullContent = "";
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            const text = decoder.decode(value, { stream: true });
-            const lines = text.split("\n").filter(l => l.startsWith("data: ") && !l.includes("[DONE]"));
-            for (const line of lines) {
-              try {
-                const json = JSON.parse(line.slice(6));
-                const content = json.choices?.[0]?.delta?.content || "";
-                if (content) {
-                  fullContent += content;
-                  controller.enqueue(encoder.encode(JSON.stringify({ content }) + "\n"));
-                }
-              } catch {}
-            }
+      start(controller) {
+        // Simulate streaming by sending chunks
+        const words = fullContent.split(/(?<=\s)/);
+        let i = 0;
+        const send = () => {
+          if (i < words.length) {
+            controller.enqueue(encoder.encode(JSON.stringify({ content: words[i] }) + "\n"));
+            i++;
+            setTimeout(send, 15);
+          } else {
+            controller.close();
           }
-          // Save messages back to KV
-          if (fullContent) {
-            session.messages = session.messages || [];
-            session.messages.push({ role: "user", content: message });
-            session.messages.push({ role: "assistant", content: fullContent });
-            session.last_updated = new Date().toISOString();
-            const kvUrl = process.env.KV_REST_API_URL;
-            const kvToken = process.env.KV_REST_API_TOKEN;
-            if (kvUrl && kvToken) {
-              await fetch(`${kvUrl}/set/session:${id}`, {
-                method: "POST",
-                headers: {
-                  Authorization: `Bearer ${kvToken}`,
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ value: JSON.stringify(session) }),
-              });
-            }
-          }
-        } catch (err) {
-          controller.error(err);
-        } finally {
-          controller.close();
-          reader.releaseLock();
-        }
+        };
+        send();
       },
     });
 
