@@ -40,19 +40,24 @@ export async function POST(
       return NextResponse.json({ error: "session not found" }, { status: 404 });
     }
 
-    // Use session's own endpoint & model by default
-    const baseUrl = session.base_url || "https://api.openai.com/v1";
-    const model = session.model || "gpt-4o";
+    // Use session's own endpoint by default
+    let apiBaseUrl = session.base_url || "https://api.openai.com/v1";
+    let model = session.model || "gpt-4o";
+
+    // If using opencode, force their endpoint and pick an available model
+    if (apiBaseUrl.includes("opencode")) {
+      apiBaseUrl = "https://opencode.ai/zen/go/v1";
+      model = "gpt-5.2-codex";
+    }
 
     // Get auth token: GitHub token (for OpenCode) or OpenAI key
     const ghToken = await getGitHubToken();
     const openaiKey = process.env.OPENAI_API_KEY || "";
 
     let apiKey = "";
-    let apiBaseUrl = baseUrl;
 
     // Determine which auth to use
-    if (baseUrl.includes("opencode")) {
+    if (apiBaseUrl.includes("opencode")) {
       apiKey = ghToken;
       if (!apiKey) {
         apiKey = process.env.OPENCODE_KEY || openaiKey;
