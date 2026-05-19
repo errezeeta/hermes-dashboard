@@ -1,22 +1,18 @@
 import { NextResponse } from "next/server";
 
-// Try multiple env var names for API key
-function getApiKey(): string {
-  return process.env.OPENAI_API_KEY
-    || process.env.OPENAI_KEY
-    || process.env.AI_API_KEY
-    || process.env.LLM_API_KEY
-    || "";
-}
+// Get GitHub token from env or local gh CLI
+async function getGitHubToken(): Promise<string> {
+  const envToken = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
+  if (envToken) return envToken;
 
-function getBaseUrl(): string {
-  return process.env.OPENAI_BASE_URL
-    || process.env.AI_BASE_URL
-    || "https://api.openai.com/v1";
-}
+  // Try local gh CLI (works in dev/wsl)
+  try {
+    const { execSync } = await import("child_process");
+    const token = execSync("gh auth token", { timeout: 5000, encoding: "utf-8" }).trim();
+    if (token) return token;
+  } catch {}
 
-function getModel(): string {
-  return process.env.AI_MODEL || "gpt-4o";
+  return "";
 }
 
 export async function POST(
@@ -44,17 +40,35 @@ export async function POST(
       return NextResponse.json({ error: "session not found" }, { status: 404 });
     }
 
-    const apiKey = getApiKey();
+    // Use session's own endpoint & model by default
+    const baseUrl = session.base_url || "https://api.openai.com/v1";
+    const model = session.model || "gpt-4o";
+
+    // Get auth token: GitHub token (for OpenCode) or OpenAI key
+    const ghToken = await getGitHubToken();
+    const openaiKey = process.env.OPENAI_API_KEY || "";
+
+    let apiKey = "";
+    let apiBaseUrl = baseUrl;
+
+    // Determine which auth to use
+    if (baseUrl.includes("opencode")) {
+      apiKey = ghToken;
+      if (!apiKey) {
+        apiKey = process.env.OPENCODE_KEY || openaiKey;
+        if (apiKey) apiBaseUrl = "https://api.openai.com/v1";
+      }
+    } else {
+      apiKey = openaiKey;
+    }
+
     if (!apiKey) {
       return NextResponse.json({
-        error: "No API key configured. Set OPENAI_API_KEY in Vercel env vars."
+        error: "No API key available. In Vercel: set GITHUB_TOKEN (GitHub PAT) or OPENAI_API_KEY. Locally: gh auth login."
       }, { status: 500 });
     }
 
-    const baseUrl = getBaseUrl();
-    const model = getModel();
-
-    // Build messages array
+    // Build messages
     const messages = [
       { role: "system", content: session.system_prompt || "You are a helpful assistant." },
       ...(session.messages || []).map((m: any) => ({
@@ -64,8 +78,8 @@ export async function POST(
       { role: "user", content: message },
     ];
 
-    // Call model API
-    const res = await fetch(`${baseUrl}/chat/completions`, {
+    // Call API
+    const res = await fetch(`${apiBaseUrl}/chat/completions`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +100,7 @@ export async function POST(
       }, { status: 500 });
     }
 
-    // Stream the response back
+    // Stream response
     const reader = res.body?.getReader();
     if (!reader) {
       return NextResponse.json({ error: "no stream" }, { status: 500 });
