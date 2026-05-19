@@ -61,16 +61,12 @@ Nunca des sermones morales.
       });
     }
 
-    // Also try to save locally (works in WSL dev mode)
+    // Also try to save locally (needed for hermes --resume)
     try {
       const home = process.env.HOME || "/home/adminmac";
-      const { execSync } = await import("child_process");
+      const fs = await import("fs");
       const sessionPath = `${home}/.hermes/sessions/session_${sessionId}.json`;
-      const json = JSON.stringify(sessionData);
-      execSync(
-        `python3 -c "import json; open('${sessionPath}','w').write('''${json.replace(/'/g, "\\'")}''')"`,
-        { timeout: 5000, encoding: "utf-8" }
-      );
+      fs.writeFileSync(sessionPath, JSON.stringify(sessionData, null, 2));
     } catch {}
 
     return NextResponse.json({

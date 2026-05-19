@@ -82,7 +82,7 @@ export async function POST(
       const res = await fetch("https://opencode.ai/zen/go/v1/chat/completions", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${ghToken}` },
-        body: JSON.stringify({ model: "gpt-5.2-codex", messages, max_tokens: 2048 }),
+        body: JSON.stringify({ model: "gpt-4o", messages, max_tokens: 2048 }),
       });
 
       if (!res.ok) {
@@ -94,13 +94,21 @@ export async function POST(
       fullContent = data.choices?.[0]?.message?.content || "";
     }
 
-    // Save to session
+    // Save to session and persist
     session.messages = session.messages || [];
     session.messages.push({ role: "user", content: message });
     session.messages.push({ role: "assistant", content: fullContent });
     session.last_updated = new Date().toISOString();
 
+    // Save to KV (Vercel)
     await kvSet(`session:${id}`, session);
+
+    // Save locally (needed for hermes --resume)
+    try {
+      const home = process.env.HOME || "/home/adminmac";
+      const fs = await import("fs");
+      fs.writeFileSync(`${home}/.hermes/sessions/session_${id}.json`, JSON.stringify(session, null, 2));
+    } catch {}
 
     // Stream back
     const encoder = new TextEncoder();
