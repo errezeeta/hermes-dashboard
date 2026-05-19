@@ -1,18 +1,22 @@
 import { NextResponse } from "next/server";
 
-const PROVIDER_KEYS: Record<string, string> = {
-  "opencode": process.env.OPENCODE_API_KEY || "",
-  "openai": process.env.OPENAI_API_KEY || "",
-  "anthropic": process.env.ANTHROPIC_API_KEY || "",
-  "deepseek": process.env.DEEPSEEK_API_KEY || "",
-};
+// Try multiple env var names for API key
+function getApiKey(): string {
+  return process.env.OPENAI_API_KEY
+    || process.env.OPENAI_KEY
+    || process.env.AI_API_KEY
+    || process.env.LLM_API_KEY
+    || "";
+}
 
-function getProvider(url: string): string {
-  if (url.includes("opencode")) return "opencode";
-  if (url.includes("openai") || url.includes("api.openai")) return "openai";
-  if (url.includes("anthropic")) return "anthropic";
-  if (url.includes("deepseek")) return "deepseek";
-  return "opencode";
+function getBaseUrl(): string {
+  return process.env.OPENAI_BASE_URL
+    || process.env.AI_BASE_URL
+    || "https://api.openai.com/v1";
+}
+
+function getModel(): string {
+  return process.env.AI_MODEL || "gpt-4o";
 }
 
 export async function POST(
@@ -40,10 +44,15 @@ export async function POST(
       return NextResponse.json({ error: "session not found" }, { status: 404 });
     }
 
-    const baseUrl = session.base_url || "https://opencode.ai/zen/go/v1";
-    const model = session.model || "deepseek-v4-flash";
-    const provider = getProvider(baseUrl);
-    const apiKey = PROVIDER_KEYS[provider];
+    const apiKey = getApiKey();
+    if (!apiKey) {
+      return NextResponse.json({
+        error: "No API key configured. Set OPENAI_API_KEY in Vercel env vars."
+      }, { status: 500 });
+    }
+
+    const baseUrl = getBaseUrl();
+    const model = getModel();
 
     // Build messages array
     const messages = [
@@ -65,14 +74,16 @@ export async function POST(
       body: JSON.stringify({
         model,
         messages,
-        max_tokens: 1024,
+        max_tokens: 2048,
         stream: true,
       }),
     });
 
     if (!res.ok) {
       const errText = await res.text();
-      return NextResponse.json({ error: `API error: ${res.status} ${errText.slice(0, 200)}` }, { status: 500 });
+      return NextResponse.json({
+        error: `API error (${res.status}): ${errText.slice(0, 300)}`
+      }, { status: 500 });
     }
 
     // Stream the response back
@@ -91,7 +102,6 @@ export async function POST(
             const { done, value } = await reader.read();
             if (done) break;
             const text = decoder.decode(value, { stream: true });
-            // Parse SSE format
             const lines = text.split("\n").filter(l => l.startsWith("data: ") && !l.includes("[DONE]"));
             for (const line of lines) {
               try {
